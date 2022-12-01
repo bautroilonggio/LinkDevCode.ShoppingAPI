@@ -2,6 +2,7 @@
 using Shopping.API.Commons;
 using Shopping.API.DataAccess.DbContexts;
 using Shopping.API.DataAccess.Entities;
+using System.Linq.Expressions;
 
 namespace Shopping.API.DataAccess.Repositories
 {
@@ -44,6 +45,13 @@ namespace Shopping.API.DataAccess.Repositories
                                                     .ToListAsync();                     // Tương tác với CSDL
 
             return (collectionToReturn, paginationMetadata);
+        }
+
+        public async Task<Order?> GetOrderAsync(Expression<Func<Order, bool>> where)
+        {
+            return await _context.Orders.Include(o => o.OrderDetails)
+                                        .ThenInclude(o => o.Product)
+                                        .Where(where).FirstOrDefaultAsync();
         }
 
         public void Add(User user, Order order)

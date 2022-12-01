@@ -45,8 +45,8 @@ namespace Shopping.API.Controllers
         [HttpPost("signin")]
         public async Task<ActionResult> SignInAsync(UserForSignInDto user)
         {
-            var token = await _userService.SignInAsync(user);
-            if (token == null)
+            var (accessToken, refreshToken) = await _userService.SignInAsync(user);
+            if (accessToken == null || refreshToken == null)
             {
                 return Unauthorized(new ResponseAPI
                 {
@@ -55,26 +55,55 @@ namespace Shopping.API.Controllers
                 });
             }
 
+            // Lưu vào cookie
+            SetRefreshTokenTnCookie(refreshToken);
+
             return Ok(new ResponseAPI
             {
                 Status = true,
                 Message = "Sign In success",
-                Data = token
+                Data = new
+                {
+                    AccessToken = accessToken,
+                    RefreshToken = refreshToken.RefreshToken,
+                }
             });
         }
 
+        //[HttpPost("logout")]
+        //public ActionResult LogoutAsync()
+        //{
+        //    Response.Cookies.Delete("refreshToken");
+
+        //    if(Request.Cookies["refreshToken"] != null)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    return Ok();
+        //}
+
         [HttpPost("refresh-token")]
-        public async Task<ActionResult> RefreshTokenAsync(RefreshTokenDto refreshToken)
+        public async Task<ActionResult> RefreshTokenAsync()
         {
             try
             {
-                var accessToken = await _userService.RefreshTokenAsync(refreshToken);
+                var refreshToken = Request.Cookies["refreshToken"];
+
+                var (newAccessToken, newRefreshToken) = await _userService.RefreshTokenAsync(refreshToken);
+
+                // Lưu vào cookie
+                SetRefreshTokenTnCookie(newRefreshToken);
 
                 return Ok(new ResponseAPI()
                 {
                     Status = true,
-                    Message = "Created new Access Token",
-                    Data = accessToken
+                    Message = "Created new Token",
+                    Data = new
+                    {
+                        AccessToken = newAccessToken,
+                        RefreshToken = newRefreshToken.RefreshToken
+                    }
                 });
             }
             catch (Exception e)
@@ -97,6 +126,17 @@ namespace Shopping.API.Controllers
             }
 
             return NoContent();
+        }
+
+
+        public void SetRefreshTokenTnCookie(RefreshTokenDto refreshToken)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = refreshToken.RefreshTokenExpries
+            };
+            Response.Cookies.Append("refreshToken", refreshToken.RefreshToken, cookieOptions);
         }
     }
 }

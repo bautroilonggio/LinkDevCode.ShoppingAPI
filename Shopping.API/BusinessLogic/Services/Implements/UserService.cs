@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Microsoft.IdentityModel.Tokens;
 using Shopping.API.DataAccess;
 using Shopping.API.DataAccess.Entities;
@@ -52,7 +53,7 @@ namespace Shopping.API.BusinessLogic.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<TokenDto?> SignInAsync(UserForSignInDto user)
+        public async Task<(string, RefreshTokenDto)> SignInAsync(UserForSignInDto user)
         {
             var userEntity = await _unitOfWork.UserRepository.GetSingleConditionsAsync(
                                    u => (u.UserName == user.UserName || u.Email == user.UserName) 
@@ -60,7 +61,7 @@ namespace Shopping.API.BusinessLogic.Services
 
             if(userEntity == null)
             {
-                return null;
+                throw new Exception("Sign In failed");
             }
 
             var accessToken = GenerateAccessToken(userEntity);
@@ -74,13 +75,13 @@ namespace Shopping.API.BusinessLogic.Services
 
             await _unitOfWork.CommitAsync();
 
-            return new TokenDto(accessToken, refreshToken.RefreshToken);
+            return (accessToken, refreshToken);
         }
 
-        public async Task<string> RefreshTokenAsync(RefreshTokenDto refreshToken)
+        public async Task<(string, RefreshTokenDto)> RefreshTokenAsync(string refreshToken)
         {
             var userEntity = await _unitOfWork.UserRepository
-                .GetSingleConditionsAsync(u => u.RefreshToken == refreshToken.RefreshToken);
+                .GetSingleConditionsAsync(u => u.RefreshToken == refreshToken);
 
             if(userEntity == null)
             {
@@ -91,9 +92,18 @@ namespace Shopping.API.BusinessLogic.Services
                 throw new Exception("Refresh Token expired! Please sign in again!");
             }
 
-            var accessToken = GenerateAccessToken(userEntity);
+            var newAccessToken = GenerateAccessToken(userEntity);
 
-            return accessToken;
+            var newRefreshToken = GenerateRefreshToken();
+
+            // Cập nhật refresh token mới
+            userEntity.RefreshToken = newRefreshToken.RefreshToken;
+            userEntity.RefreshTokenCreatedAt = newRefreshToken.RefreshTokenCreatedAt;
+            userEntity.RefreshTokenExpries = newRefreshToken.RefreshTokenExpries;
+
+            await _unitOfWork.CommitAsync();
+
+            return (newAccessToken, newRefreshToken);
         }
 
         public async Task<bool> DeleteUserAsync(string userName)
@@ -132,7 +142,7 @@ namespace Shopping.API.BusinessLogic.Services
                 audience: _configuration["Authentication:Audience"],
                 claims: claimsForToken,
                 notBefore: DateTime.Now,
-                expires: DateTime.Now.AddSeconds(10),
+                expires: DateTime.Now.AddMinutes(5),
                 signingCredentials: signingCredetials);
 
             var jwtToReturn = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
@@ -146,7 +156,7 @@ namespace Shopping.API.BusinessLogic.Services
             {
                 RefreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
                 RefreshTokenCreatedAt = DateTime.Now,
-                RefreshTokenExpries = DateTime.Now.AddMinutes(5)
+                RefreshTokenExpries = DateTime.Now.AddDays(1)
             };
 
             return refreshToken;

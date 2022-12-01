@@ -40,7 +40,7 @@ namespace Shopping.API.BusinessLogic.Services
 
         public async Task<OrderDto?> GetOrderAsync(int orderId)
         {
-            var entity = await _unitOfWork.OrderRepository.GetSingleAsync(orderId);
+            var entity = await _unitOfWork.OrderRepository.GetOrderAsync(o => o.Id == orderId);
 
             if (entity == null)
             {
