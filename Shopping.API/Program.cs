@@ -8,16 +8,26 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using Shopping.API.BusinessLogic.Services;
 using Shopping.API.Commons;
 using Shopping.API.DataAccess;
 using Shopping.API.DataAccess.DbContexts;
 using System.Text;
 
+// Cau hinh trinh ghi log su dung Serilog
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/shopping.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Kich hoat trinh ghi log su dung Serilog
+builder.Host.UseSerilog();
 
+// Add services to the container.
 builder.Services.AddControllers(options =>
 {
     options.ReturnHttpNotAcceptable = true;
@@ -55,18 +65,15 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 
 
 
-FirebaseApp.Create(new AppOptions
-{
-    Credential = GoogleCredential.FromFile(@"D:\WorkSpace\FPT\Traning\Project\Shopping\LinkDevCode.Shopping\Shopping.API\linkdevcodeshoppingapi-firebase-adminsdk-9ho0t-eb4df4e2e7.json")
-});
+//FirebaseApp.Create(new AppOptions
+//{
+//    Credential = GoogleCredential.FromFile(@"D:\WorkSpace\FPT\Traning\Project\Shopping\LinkDevCode.Shopping\Shopping.API\linkdevcodeshoppingapi-firebase-adminsdk-9ho0t-eb4df4e2e7.json")
+//});
 
 
 builder.Services
-    .AddAuthentication(options =>
-    {
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer("Project", options =>
+    .AddAuthentication("Bearer")
+    .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new()
         {
@@ -80,23 +87,23 @@ builder.Services
         };
     });
 
-builder.Services
-    .AddAuthentication(options =>
-    {
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer("Firebase", options =>
-    {
-        options.Authority = builder.Configuration["Authentication:Firebase:Issuer"];
-        options.TokenValidationParameters = new()
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Authentication:Firebase:Issuer"],
-            ValidAudience = builder.Configuration["Authentication:Firebase:Audience"],
-        };
-    });
+//builder.Services
+//    .AddAuthentication(options =>
+//    {
+//        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//    })
+//    .AddJwtBearer("Firebase", options =>
+//    {
+//        options.Authority = builder.Configuration["Authentication:Firebase:Issuer"];
+//        options.TokenValidationParameters = new()
+//        {
+//            ValidateIssuer = true,
+//            ValidateAudience = true,
+//            ValidateIssuerSigningKey = true,
+//            ValidIssuer = builder.Configuration["Authentication:Firebase:Issuer"],
+//            ValidAudience = builder.Configuration["Authentication:Firebase:Audience"],
+//        };
+//    });
 
 
 //builder.Services
@@ -128,13 +135,13 @@ builder.Services
 //    });
 
 
-builder.Services.AddAuthorization(opt =>
-{
-    opt.DefaultPolicy = new AuthorizationPolicyBuilder()
-    .AddAuthenticationSchemes("Project", "Firebase")
-    .RequireAuthenticatedUser()
-    .Build();
-});
+//builder.Services.AddAuthorization(opt =>
+//{
+//    opt.DefaultPolicy = new AuthorizationPolicyBuilder()
+//    .AddAuthenticationSchemes("Project", "Firebase")
+//    .RequireAuthenticatedUser()
+//    .Build();
+//});
 
 
 var app = builder.Build();

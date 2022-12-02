@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Shopping.API.BusinessLogic.Services;
 using Shopping.API.Commons;
 using Shopping.API.DataAccess.Models;
@@ -14,16 +15,20 @@ namespace Shopping.API.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
+        private readonly ILogger<CartController> _logger;
+
         private readonly ICartService _cartService;
 
-        public CartController(ICartService cartService)
+        public CartController(ILogger<CartController> logger, ICartService cartService)
         {
+            _logger = logger ?? 
+                throw new ArgumentNullException(nameof(logger));
             _cartService = cartService ??
                 throw new ArgumentNullException(nameof(cartService));
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetCartsAsync(
+        public async Task<ActionResult<IEnumerable<CartDto>>> GetCartsAsync(
             string? searchQuery, int pageNumber = 1, int pageSize = 5)
         {
             var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -36,8 +41,12 @@ namespace Shopping.API.Controllers
 
             if (carts.Count() == 0)
             {
+                _logger.LogInformation($"Gio hang cua tai khoan {userName} dang trong");
+
                 return NotFound();
             }
+
+            _logger.LogInformation($"Hien thi gio hang cua tai khoan {userName}");
 
             return Ok(carts);
         }
@@ -53,13 +62,22 @@ namespace Shopping.API.Controllers
 
                 if (createCartToReturn == null)
                 {
+                    _logger.LogInformation(
+                        $"Them khong thanh cong san pham co id {cart.ProductId} vao gio hang cua tai khoan {userName}");
+
                     return NotFound();
                 }
+
+                _logger.LogInformation(
+                        $"Them thanh cong san pham co id {cart.ProductId} vao gio hang cua tai khoan {userName}");
 
                 return Created("Created new cart", createCartToReturn);
             }
             catch (Exception e)
             {
+                _logger.LogWarning(
+                        $"Them san pham vao gio hang khong thanh cong do {e.Message}");
+
                 return BadRequest(new ResponseAPI
                 {
                     Status = false,
@@ -79,6 +97,8 @@ namespace Shopping.API.Controllers
                 return NotFound();
             }
 
+            _logger.LogInformation($"Da cap nhat gio hang cua tai khoan {userName}");
+
             return NoContent();
         }
 
@@ -91,6 +111,8 @@ namespace Shopping.API.Controllers
             {
                 return NotFound();
             }
+
+            _logger.LogInformation($"Da xoa mot san pham trong gio hang cua tai khoan {userName}");
 
             return NoContent();
         }

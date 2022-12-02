@@ -61,7 +61,7 @@ namespace Shopping.API.BusinessLogic.Services
 
             if(accountEntity == null)
             {
-                throw new Exception("Sign In failed");
+                throw new Exception("Incorrect username or password!");
             }
 
             var accessToken = GenerateAccessToken(accountEntity);
@@ -80,16 +80,24 @@ namespace Shopping.API.BusinessLogic.Services
 
         public async Task SignUpFirebaseAsync(AccountForSignUpDto account)
         {
-            var auth = new FirebaseAuthProvider(new FirebaseConfig(_configuration["Authentication:Firebase:WebAPIKey"]));
+            var auth = new FirebaseAuthProvider(
+                new FirebaseConfig(_configuration["Authentication:Firebase:WebAPIKey"]));
+
             await auth.CreateUserWithEmailAndPasswordAsync(
                 account.Email, account.Password, account.LastName + account.FirstName, true);
         }
 
         public async Task<string> SignInFirebaseAsync(AccountForSignInDto account)
         {
-            var auth = new FirebaseAuthProvider(new FirebaseConfig(_configuration["Authentication:Firebase:WebAPIKey"]));
+            var auth = new FirebaseAuthProvider(
+                new FirebaseConfig(_configuration["Authentication:Firebase:WebAPIKey"]));
+
             var t = await auth.SignInWithEmailAndPasswordAsync(account.UserName, account.Password);
+
+            
+
             string token = t.FirebaseToken;
+
             return token;
         }
 

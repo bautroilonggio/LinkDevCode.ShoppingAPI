@@ -14,10 +14,14 @@ namespace Shopping.API.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
+        private readonly ILogger<OrderController> _logger;
+
         private readonly IOrderService _orderService;
 
-        public OrderController(IOrderService orderService)
+        public OrderController(ILogger<OrderController> logger, IOrderService orderService)
         {
+            _logger = logger ??
+                throw new ArgumentNullException(nameof(logger));
             _orderService = orderService ??
                 throw new ArgumentNullException(nameof(orderService));
         }
@@ -36,8 +40,12 @@ namespace Shopping.API.Controllers
 
             if (orders.Count() == 0)
             {
+                _logger.LogInformation($"Khong co lich su mua hang cua tai khoan {userName}");
+
                 return NotFound();
             }
+
+            _logger.LogInformation($"Hien thi thong tin lich su mua hang cua tai khoan {userName}");
 
             return Ok(orders);
         }
@@ -56,10 +64,14 @@ namespace Shopping.API.Controllers
                     return NotFound();
                 }
 
+                _logger.LogInformation($"Tai khoan {userName} da tao don hang moi");
+
                 return Created("Created new order", createorderToReturn);
             }
             catch (Exception e)
             {
+                _logger.LogWarning($"Dat hang khong thanh cong do {e.Message}");
+
                 return BadRequest(new ResponseAPI
                 {
                     Status = false,
@@ -77,8 +89,12 @@ namespace Shopping.API.Controllers
 
             if (!await _orderService.UpdateOrderAsync(userName, orderId, order))
             {
+                _logger.LogWarning($"Khong tim thay don hang co id {orderId} cua tai khoan {userName}");
+
                 return NotFound();
             }
+
+            _logger.LogInformation($"Thong tin don hang co id {orderId} cua tai khoan {userName} da duoc cap nhat");
 
             return NoContent();
         }
@@ -91,8 +107,13 @@ namespace Shopping.API.Controllers
 
             if (!await _orderService.DeleteOrderAsync(userName, orderId))
             {
+                _logger.LogWarning($"Khong tim thay don hang co id {orderId} cua tai khoan {userName}");
+
                 return NotFound();
             }
+
+            _logger.LogInformation(
+                $"Thong tin don hang co id {orderId} cua tai khoan {userName} da bi xoa boi ADMIN {userName}");
 
             return NoContent();
         }

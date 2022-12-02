@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shopping.API.DataAccess.Models
 {
@@ -33,13 +34,12 @@ namespace Shopping.API.DataAccess.Models
         [Required]
         public string Address { get; set; }
 
-        [Required]
-        [MaxLength(10)]
+        [JsonIgnore]
         public string Role { get; set; }
 
         public AccountForSignUpDto(string userName, string password,
             string firstName, string lastName, DateOnly dateOfBirth,
-            string phone, string email, string address, string role)
+            string phone, string email, string address)
         {
             UserName = userName;
             Password = password;
@@ -49,7 +49,7 @@ namespace Shopping.API.DataAccess.Models
             Phone = phone;
             Email = email;
             Address = address;
-            Role = role;
+            Role = "USER";
         }
     }
 }
