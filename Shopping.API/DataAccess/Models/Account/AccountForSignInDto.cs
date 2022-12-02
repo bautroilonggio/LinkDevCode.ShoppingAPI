@@ -2,7 +2,7 @@
 
 namespace Shopping.API.DataAccess.Models
 {
-    public class UserForSignInDto
+    public class AccountForSignInDto
     {
         [Required]
         [MaxLength(100)]
@@ -14,7 +14,7 @@ namespace Shopping.API.DataAccess.Models
 
         public bool RememberMe { get; set; }
 
-        public UserForSignInDto(string userName, string password)
+        public AccountForSignInDto(string userName, string password)
         {
             UserName = userName;
             Password = password;

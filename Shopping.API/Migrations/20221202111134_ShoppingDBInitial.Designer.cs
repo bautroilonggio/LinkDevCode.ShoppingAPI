@@ -12,8 +12,8 @@ using Shopping.API.DataAccess.DbContexts;
 namespace Shopping.API.Migrations
 {
     [DbContext(typeof(ShoppingContext))]
-    [Migration("20221130014131_ShoppingDBInitialMigration")]
-    partial class ShoppingDBInitialMigration
+    [Migration("20221202111134_ShoppingDBInitial")]
+    partial class ShoppingDBInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,118 @@ namespace Shopping.API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Shopping.API.DataAccess.Entities.Account", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenCreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("RefreshTokenExpries")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Phone")
+                        .IsUnique();
+
+                    b.HasIndex("UserName")
+                        .IsUnique();
+
+                    b.ToTable("Accounts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Hoang Mai",
+                            CreatedAt = new DateTime(2022, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(1999, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "nguyenkhaclinh100@gmail.com",
+                            FirstName = "Linh",
+                            LastName = "Nguyen",
+                            Password = "admin",
+                            Phone = "0972901427",
+                            RefreshToken = "",
+                            RefreshTokenCreatedAt = new DateTime(2022, 12, 2, 18, 11, 34, 474, DateTimeKind.Local).AddTicks(9869),
+                            RefreshTokenExpries = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "ADMIN",
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Hai Ba Trung",
+                            CreatedAt = new DateTime(2022, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateTime(1999, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "linknguyen@gmail.com",
+                            FirstName = "Linh",
+                            LastName = "Nguyen",
+                            Password = "user",
+                            Phone = "0928347519",
+                            RefreshToken = "",
+                            RefreshTokenCreatedAt = new DateTime(2022, 12, 2, 18, 11, 34, 474, DateTimeKind.Local).AddTicks(9947),
+                            RefreshTokenExpries = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "USER",
+                            UserName = "user"
+                        });
+                });
 
             modelBuilder.Entity("Shopping.API.DataAccess.Entities.Cart", b =>
                 {
@@ -84,6 +196,9 @@ namespace Shopping.API.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<double>("TotalPayment")
+                        .HasColumnType("float");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -146,8 +261,11 @@ namespace Shopping.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<double?>("Price")
+                    b.Property<double?>("SellingPrice")
                         .HasColumnType("float");
+
+                    b.Property<int>("TotalQuantity")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -187,102 +305,6 @@ namespace Shopping.API.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("Shopping.API.DataAccess.Entities.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Phone")
-                        .IsUnique();
-
-                    b.HasIndex("UserName")
-                        .IsUnique();
-
-                    b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "Hoang Mai",
-                            CreatedAt = new DateTime(2022, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateOfBirth = new DateTime(1999, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "nguyenkhaclinh100@gmail.com",
-                            FirstName = "Linh",
-                            LastName = "Nguyen",
-                            Password = "admin",
-                            Phone = "0972901427",
-                            Role = "ADMIN",
-                            UserName = "admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "Hai Ba Trung",
-                            CreatedAt = new DateTime(2022, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateOfBirth = new DateTime(1999, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "linknguyen@gmail.com",
-                            FirstName = "Linh",
-                            LastName = "Nguyen",
-                            Password = "user",
-                            Phone = "0928347519",
-                            Role = "USER",
-                            UserName = "user"
-                        });
-                });
-
             modelBuilder.Entity("Shopping.API.DataAccess.Entities.Cart", b =>
                 {
                     b.HasOne("Shopping.API.DataAccess.Entities.Product", "Product")
@@ -291,7 +313,7 @@ namespace Shopping.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shopping.API.DataAccess.Entities.User", "User")
+                    b.HasOne("Shopping.API.DataAccess.Entities.Account", "User")
                         .WithMany("Carts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -304,7 +326,7 @@ namespace Shopping.API.Migrations
 
             modelBuilder.Entity("Shopping.API.DataAccess.Entities.Order", b =>
                 {
-                    b.HasOne("Shopping.API.DataAccess.Entities.User", "User")
+                    b.HasOne("Shopping.API.DataAccess.Entities.Account", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -340,7 +362,7 @@ namespace Shopping.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shopping.API.DataAccess.Entities.User", "User")
+                    b.HasOne("Shopping.API.DataAccess.Entities.Account", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -349,6 +371,15 @@ namespace Shopping.API.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Shopping.API.DataAccess.Entities.Account", b =>
+                {
+                    b.Navigation("Carts");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Shopping.API.DataAccess.Entities.Order", b =>
@@ -361,15 +392,6 @@ namespace Shopping.API.Migrations
                     b.Navigation("Carts");
 
                     b.Navigation("OrderDetails");
-
-                    b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("Shopping.API.DataAccess.Entities.User", b =>
-                {
-                    b.Navigation("Carts");
-
-                    b.Navigation("Orders");
 
                     b.Navigation("Reviews");
                 });

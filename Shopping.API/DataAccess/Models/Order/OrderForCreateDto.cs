@@ -26,7 +26,7 @@ namespace Shopping.API.DataAccess.Models
         public string Status { get; set; }
 
         [JsonIgnore]
-        public double SumOfPrice { get; set; }
+        public double TotalPayment { get; set; }
 
         public ICollection<CartForCreateOrderDto> Carts { get; set; } = new List<CartForCreateOrderDto>();
 

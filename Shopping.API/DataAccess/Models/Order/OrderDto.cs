@@ -18,7 +18,7 @@ namespace Shopping.API.DataAccess.Models
 
         public string? Status { get; set; }
 
-        public double SumOfPrice { get; set; }
+        public double TotalPayment { get; set; }
 
         public int NumberOfOrderDetails 
         {

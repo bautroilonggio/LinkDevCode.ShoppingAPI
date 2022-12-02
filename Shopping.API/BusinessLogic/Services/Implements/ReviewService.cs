@@ -39,7 +39,7 @@ namespace Shopping.API.BusinessLogic.Services
 
         public async Task<ReviewDto?> CreateReviewAsync(string userName, int productId, ReviewForCreateDto review)
         {
-            var userEntity = await _unitOfWork.UserRepository
+            var userEntity = await _unitOfWork.AccountRepository
                                    .GetUserIncludeReviewsAsync(u => u.UserName == userName);
 
             if(userEntity == null)
@@ -72,7 +72,7 @@ namespace Shopping.API.BusinessLogic.Services
         public async Task<bool> UpdateReviewAsync(string userName, 
             int productId, int reviewId, ReviewForUpdateDto review)
         {
-            var userEntity = await _unitOfWork.UserRepository
+            var userEntity = await _unitOfWork.AccountRepository
                                    .GetUserIncludeReviewsAsync(u => u.UserName == userName);
 
             if (userEntity == null)
@@ -103,7 +103,7 @@ namespace Shopping.API.BusinessLogic.Services
 
         public async Task<bool> DeleteReviewAsync(string userName, int productId, int reviewId)
         {
-            var userEntity = await _unitOfWork.UserRepository
+            var userEntity = await _unitOfWork.AccountRepository
                                    .GetUserIncludeReviewsAsync(u => u.UserName == userName);
 
             if (userEntity == null)

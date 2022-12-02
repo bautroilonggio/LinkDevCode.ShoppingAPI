@@ -23,7 +23,7 @@ namespace Shopping.API.DataAccess.Entities
         public int ProductId { get; set; }
 
         [ForeignKey("UserId")]
-        public User? User { get; set; }
+        public Account? User { get; set; }
 
         public int UserId { get; set; }
 

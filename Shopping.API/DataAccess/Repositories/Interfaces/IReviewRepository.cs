@@ -7,7 +7,7 @@ namespace Shopping.API.DataAccess.Repositories
     {
         Task<(IEnumerable<Review>, PaginationMetadata)> GetAllAsync(
             int? rating, int pageNumber, int pageSize);
-        void Add(User user, Product product, Review review);
-        void Delete(User user, Product product, Review review);
+        void Add(Account user, Product product, Review review);
+        void Delete(Account user, Product product, Review review);
     }
 }

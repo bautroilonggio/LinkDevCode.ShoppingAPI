@@ -9,7 +9,7 @@ namespace Shopping.API.DataAccess.Models
 
         public string? Name { get; set; }
 
-        public double Price { get; set; }
+        public double SellingPrice { get; set; }
 
         public int TotalQuantity { get; set; }
 

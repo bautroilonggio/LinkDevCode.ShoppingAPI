@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Shopping.API.DataAccess.Entities
 {
-    public class User
+    public class Account
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -57,7 +57,7 @@ namespace Shopping.API.DataAccess.Entities
 
         public ICollection<Order> Orders { get; set; } = new List<Order>();
 
-        public User(string userName, string password,
+        public Account(string userName, string password,
             string firstName, string lastName, DateOnly dateOfBirth,
             string phone, string email, string address, string role)
         {

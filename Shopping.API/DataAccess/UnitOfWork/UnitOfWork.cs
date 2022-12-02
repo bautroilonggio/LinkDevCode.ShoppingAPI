@@ -7,16 +7,16 @@ namespace Shopping.API.DataAccess
     {
         private readonly ShoppingContext _context;
 
-        private IUserRepository? _userRepository;
-        public IUserRepository UserRepository
+        private IAccountRepository? _accountRepository;
+        public IAccountRepository AccountRepository
         {
             get
             {
-                if (_userRepository == null)
+                if (_accountRepository == null)
                 {
-                    _userRepository = new UserRepository(_context);
+                    _accountRepository = new AccountRepository(_context);
                 }
-                return _userRepository;
+                return _accountRepository;
             }
         }
 

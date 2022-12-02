@@ -44,16 +44,16 @@ namespace Shopping.API.DataAccess.Repositories
             return (collectionToReturn, paginationMetadata);
         }
 
-        public void Add(User user, Product product, Cart cart)
+        public void Add(Account account, Product product, Cart cart)
         {
-            user.Carts.Add(cart);
+            account.Carts.Add(cart);
             product.Carts.Add(cart);
         }
 
-        public void Delete(User user, Product product, Cart cart)
+        public void Delete(Account account, Product product, Cart cart)
         {
             Delete(cart);
-            user.Carts.Remove(cart);
+            account.Carts.Remove(cart);
             product.Carts.Remove(cart);
         }
     }

@@ -6,7 +6,7 @@ namespace Shopping.API.DataAccess.DbContexts
 {
     public class ShoppingContext : DbContext
     {
-        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Account> Accounts { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<Review> Reviews { get; set; } = null!;
         public DbSet<Cart> Carts { get; set; } = null!;
@@ -22,19 +22,19 @@ namespace Shopping.API.DataAccess.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<Account>(entity =>
             {
                 entity.HasIndex(e => e.UserName).IsUnique();
                 entity.HasIndex(e => e.Phone).IsUnique();
                 entity.HasIndex(e => e.Email).IsUnique();
 
                 entity.HasData(
-                    new User("admin", "admin", "Linh", "Nguyen", DateOnly.Parse("16/11/1999"), 
+                    new Account("admin", "admin", "Linh", "Nguyen", DateOnly.Parse("16/11/1999"), 
                             "0972901427", "nguyenkhaclinh100@gmail.com", "Hoang Mai", "ADMIN")
                     {
                         Id = 1
                     },
-                    new User("user", "user", "Linh", "Nguyen", DateOnly.Parse("16/11/1999"), 
+                    new Account("user", "user", "Linh", "Nguyen", DateOnly.Parse("16/11/1999"), 
                             "0928347519", "linknguyen@gmail.com", "Hai Ba Trung", "USER")
                     {
                         Id = 2

@@ -7,7 +7,7 @@ namespace Shopping.API.DataAccess.Repositories
     {
         Task<(IEnumerable<Cart>, PaginationMetadata)> GetAllAsync(
             int userId, string? searchQuery, int pageNumber, int pageSize);
-        void Add(User user, Product product, Cart cart);
-        void Delete(User user, Product product, Cart cart);
+        void Add(Account user, Product product, Cart cart);
+        void Delete(Account user, Product product, Cart cart);
     }
 }

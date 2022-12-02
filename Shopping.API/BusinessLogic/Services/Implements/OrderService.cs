@@ -23,7 +23,7 @@ namespace Shopping.API.BusinessLogic.Services
         public async Task<(IEnumerable<OrderDto>, PaginationMetadata)> GetOrdersAsync(
             string userName, string? searchQuery, int pageNumber, int pageSize)
         {
-            var user = await _unitOfWork.UserRepository.GetSingleConditionsAsync(u => u.UserName == userName);
+            var user = await _unitOfWork.AccountRepository.GetSingleConditionsAsync(u => u.UserName == userName);
 
             if (pageSize > _maxOrdersPageSize)
             {
@@ -52,7 +52,7 @@ namespace Shopping.API.BusinessLogic.Services
 
         public async Task<OrderDto?> CreateOrderAsync(string userName, OrderForCreateDto order)
         {
-            var user = await _unitOfWork.UserRepository.GetUserIncludeCartsAsync(
+            var user = await _unitOfWork.AccountRepository.GetUserIncludeCartsAsync(
                         u => u.UserName == userName);
 
             if (user == null)
@@ -70,7 +70,7 @@ namespace Shopping.API.BusinessLogic.Services
                 order.OrderDetails.Add(orderDetail);
 
                 // Tính tổng giá tiền đơn hàng
-                order.SumOfPrice += orderDetail.Price;
+                order.TotalPayment += orderDetail.Price;
 
                 // Xóa trong giỏ hàng
                 _unitOfWork.CartRepository.Delete(cartEntity);
@@ -97,7 +97,7 @@ namespace Shopping.API.BusinessLogic.Services
 
         public async Task<bool> UpdateOrderAsync(string userName, int orderId, OrderForUpdateDto order)
         {
-            var user = await _unitOfWork.UserRepository.GetUserIncludeCartsAsync(
+            var user = await _unitOfWork.AccountRepository.GetUserIncludeCartsAsync(
                         u => u.UserName == userName);
 
             if (user == null)
@@ -121,7 +121,7 @@ namespace Shopping.API.BusinessLogic.Services
 
         public async Task<bool> DeleteOrderAsync(string userName, int orderId)
         {
-            var userEntity = await _unitOfWork.UserRepository
+            var userEntity = await _unitOfWork.AccountRepository
                                    .GetUserIncludeCartsAsync(u => u.UserName == userName);
 
             if (userEntity == null)

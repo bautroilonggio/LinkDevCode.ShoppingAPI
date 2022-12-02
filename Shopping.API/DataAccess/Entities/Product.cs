@@ -24,7 +24,7 @@ namespace Shopping.API.DataAccess.Entities
         [MaxLength(255)]
         public string? Description { get; set; }
 
-        public double? Price { get; set; }
+        public double? SellingPrice { get; set; }
 
         public int TotalQuantity { get; set; }
 

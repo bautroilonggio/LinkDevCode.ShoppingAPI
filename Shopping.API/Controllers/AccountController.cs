@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shopping.API.BusinessLogic.Services;
 using Shopping.API.Commons;
 using Shopping.API.DataAccess.Models;
+using System.Net.WebSockets;
 
 namespace Shopping.API.Controllers
 {
@@ -11,21 +13,21 @@ namespace Shopping.API.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IAccountService _accountService;
 
-        public AccountController(IUserService userService)
+        public AccountController(IAccountService accountService)
         {
-            _userService = userService ??
-                throw new ArgumentNullException(nameof(userService));
+            _accountService = accountService ??
+                throw new ArgumentNullException(nameof(accountService));
         }
 
         [Authorize(Roles = "ADMIN")]
         [HttpPost("signup")]
-        public async Task<ActionResult> SignUpAsync(UserForSignUpDto user)
+        public async Task<ActionResult> SignUpAsync(AccountForSignUpDto user)
         {
             try
             {
-                await _userService.SignUpAsync(user);
+                await _accountService.SignUpAsync(user);
                 return Created("Success", new ResponseAPI
                 {
                     Status = true,
@@ -43,45 +45,83 @@ namespace Shopping.API.Controllers
         }
 
         [HttpPost("signin")]
-        public async Task<ActionResult> SignInAsync(UserForSignInDto user)
+        public async Task<ActionResult> SignInAsync(AccountForSignInDto account)
         {
-            var (accessToken, refreshToken) = await _userService.SignInAsync(user);
-            if (accessToken == null || refreshToken == null)
+            try
             {
-                return Unauthorized(new ResponseAPI
+                var (accessToken, refreshToken) = await _accountService.SignInAsync(account);
+                if (accessToken == null || refreshToken == null)
                 {
-                    Status= false,
-                    Message = "Sign In failed!"
+                    return Unauthorized(new ResponseAPI
+                    {
+                        Status = false,
+                        Message = "Sign In failed!"
+                    });
+                }
+
+                // Lưu vào cookie
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    Expires = refreshToken.RefreshTokenExpries
+                };
+                Response.Cookies.Append("refreshToken", refreshToken.RefreshToken, cookieOptions);
+
+                return Ok(new ResponseAPI
+                {
+                    Status = true,
+                    Message = "Sign In success",
+                    Data = new
+                    {
+                        AccessToken = accessToken,
+                        RefreshToken = refreshToken.RefreshToken,
+                    }
                 });
             }
-
-            // Lưu vào cookie
-            SetRefreshTokenTnCookie(refreshToken);
-
-            return Ok(new ResponseAPI
+            catch (Exception e)
             {
-                Status = true,
-                Message = "Sign In success",
-                Data = new
-                {
-                    AccessToken = accessToken,
-                    RefreshToken = refreshToken.RefreshToken,
-                }
-            });
+                return Unauthorized(e.Message);
+            }
         }
 
-        //[HttpPost("logout")]
-        //public ActionResult LogoutAsync()
+        [HttpPost("signin-firebase")]
+        public async Task<ActionResult> SignInFirebaseAsync(AccountForSignInDto account)
+        {
+            var token = await _accountService.SignInFirebaseAsync(account);
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized();
+            }
+            return Ok(token);
+        }
+
+        [HttpPost("signup-firebase")]
+        public async Task<ActionResult> SignUpFirebaseAsync(AccountForSignUpDto account)
+        {
+            await _accountService.SignUpFirebaseAsync(account);
+            return Ok();
+        }
+
+        //[HttpPost("signin-google")]
+        //public async Task<ActionResult<string>> SignInGoogleAsync()
         //{
-        //    Response.Cookies.Delete("refreshToken");
+        //    var accessToken = await HttpContext.GetTokenAsync(GoogleDefaults.AuthenticationScheme, "access_token");
 
-        //    if(Request.Cookies["refreshToken"] != null)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    return Ok();
+        //    return Ok(accessToken);
         //}
+
+        [HttpPost("logout")]
+        public ActionResult LogoutAsync()
+        {
+            Response.Cookies.Delete("refreshToken");
+
+            if (Request.Cookies["refreshToken"] != null)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
 
         [HttpPost("refresh-token")]
         public async Task<ActionResult> RefreshTokenAsync()
@@ -90,10 +130,15 @@ namespace Shopping.API.Controllers
             {
                 var refreshToken = Request.Cookies["refreshToken"];
 
-                var (newAccessToken, newRefreshToken) = await _userService.RefreshTokenAsync(refreshToken);
+                var (newAccessToken, newRefreshToken) = await _accountService.RefreshTokenAsync(refreshToken);
 
                 // Lưu vào cookie
-                SetRefreshTokenTnCookie(newRefreshToken);
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    Expires = newRefreshToken.RefreshTokenExpries
+                };
+                Response.Cookies.Append("refreshToken", newRefreshToken.RefreshToken, cookieOptions);
 
                 return Ok(new ResponseAPI()
                 {
@@ -120,23 +165,12 @@ namespace Shopping.API.Controllers
         [HttpDelete("{userName}")]
         public async Task<ActionResult> DeleteAccountAsync(string userName)
         {
-            if(!await _userService.DeleteUserAsync(userName))
+            if(!await _accountService.DeleteAccountAsync(userName))
             {
                 return NotFound();
             }
 
             return NoContent();
-        }
-
-
-        public void SetRefreshTokenTnCookie(RefreshTokenDto refreshToken)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = refreshToken.RefreshTokenExpries
-            };
-            Response.Cookies.Append("refreshToken", refreshToken.RefreshToken, cookieOptions);
         }
     }
 }

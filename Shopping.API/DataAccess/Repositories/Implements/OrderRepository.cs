@@ -54,15 +54,15 @@ namespace Shopping.API.DataAccess.Repositories
                                         .Where(where).FirstOrDefaultAsync();
         }
 
-        public void Add(User user, Order order)
+        public void Add(Account account, Order order)
         {
-            user.Orders.Add(order);
+            account.Orders.Add(order);
         }
 
-        public void Delete(User user, Order order)
+        public void Delete(Account account, Order order)
         {
             Delete(order);
-            user.Orders.Remove(order);
+            account.Orders.Remove(order);
         }
     }
 }

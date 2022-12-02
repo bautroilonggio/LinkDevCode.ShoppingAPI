@@ -24,7 +24,7 @@ namespace Shopping.API.BusinessLogic.Services
         public async Task<(IEnumerable<CartDto>, PaginationMetadata)> GetCartsAsync(
             string userName, string? searchQuery, int pageNumber, int pageSize)
         {
-            var user = await _unitOfWork.UserRepository.GetSingleConditionsAsync(u => u.UserName == userName);
+            var user = await _unitOfWork.AccountRepository.GetSingleConditionsAsync(u => u.UserName == userName);
 
             if (pageSize > _maxCartsPageSize)
             {
@@ -53,7 +53,7 @@ namespace Shopping.API.BusinessLogic.Services
 
         public async Task<CartDto?> CreateCartAsync(string userName, CartForCreateDto cart)
         {
-            var user = await _unitOfWork.UserRepository.GetUserIncludeCartsAsync(
+            var user = await _unitOfWork.AccountRepository.GetUserIncludeCartsAsync(
                         u => u.UserName == userName);
 
             if (user == null)
@@ -73,9 +73,9 @@ namespace Shopping.API.BusinessLogic.Services
                 throw new Exception($"So luong san pham khong du cung cap! Chi co the them toi da {product.TotalQuantity} san pham");
             }
 
-            if (product.Price.HasValue)
+            if (product.SellingPrice.HasValue)
             {
-                cart.Price = cart.Quantity * product.Price.Value;
+                cart.Price = cart.Quantity * product.SellingPrice.Value;
             }
 
             var cartEntity = _mapper.Map<Cart>(cart);
@@ -89,7 +89,7 @@ namespace Shopping.API.BusinessLogic.Services
 
         public async Task<bool> UpdateCartAsync(string userName, int cartId, CartForUpdateDto cart)
         {
-            var user = await _unitOfWork.UserRepository.GetUserIncludeCartsAsync(
+            var user = await _unitOfWork.AccountRepository.GetUserIncludeCartsAsync(
                         u => u.UserName == userName);
 
             if (user == null)
@@ -111,9 +111,9 @@ namespace Shopping.API.BusinessLogic.Services
                 return false;
             }
 
-            if (product.Price.HasValue)
+            if (product.SellingPrice.HasValue)
             {
-                cart.Price = cart.Quantity * product.Price.Value;
+                cart.Price = cart.Quantity * product.SellingPrice.Value;
             }
 
             _mapper.Map(cart, cartEntity);
@@ -125,7 +125,7 @@ namespace Shopping.API.BusinessLogic.Services
 
         public async Task<bool> DeleteCartAsync(string userName, int cartId)
         {
-            var userEntity = await _unitOfWork.UserRepository
+            var userEntity = await _unitOfWork.AccountRepository
                                    .GetUserIncludeCartsAsync(u => u.UserName == userName);
 
             if (userEntity == null)

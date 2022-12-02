@@ -13,7 +13,7 @@ namespace Shopping.API.DataAccess.Entities
         public DateOnly OrderDate { get; set; }
 
         [ForeignKey("UserId")]
-        public User? User { get; set; }
+        public Account? User { get; set; }
 
         public int UserId { get; set; }
 
@@ -34,7 +34,7 @@ namespace Shopping.API.DataAccess.Entities
         public string Status { get; set; }
 
         [Required]
-        public double SumOfPrice { get; set; }
+        public double TotalPayment { get; set; }
 
         public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 

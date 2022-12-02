@@ -37,17 +37,17 @@ namespace Shopping.API.DataAccess.Repositories
             return (collectionToReturn, paginationMetadata);
         }
 
-        public void Add(User user, Product product, Review review)
+        public void Add(Account account, Product product, Review review)
         {
             product.Reviews.Add(review);
-            user.Reviews.Add(review);
+            account.Reviews.Add(review);
         }
 
-        public void Delete(User user, Product product, Review review)
+        public void Delete(Account account, Product product, Review review)
         {
             Delete(review);
             product.Reviews.Remove(review);
-            user.Reviews.Remove(review);
+            account.Reviews.Remove(review);
         }
     }
 }

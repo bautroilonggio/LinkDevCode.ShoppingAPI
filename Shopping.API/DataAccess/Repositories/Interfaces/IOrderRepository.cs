@@ -9,7 +9,7 @@ namespace Shopping.API.DataAccess.Repositories
         Task<(IEnumerable<Order>, PaginationMetadata)> GetAllAsync(
             int userId, string? searchQuery, int pageNumber, int pageSize);
         Task<Order?> GetOrderAsync(Expression<Func<Order, bool>> where);
-        void Add(User user, Order order);
-        void Delete(User user, Order order);
+        void Add(Account user, Order order);
+        void Delete(Account user, Order order);
     }
 }

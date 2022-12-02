@@ -4,11 +4,11 @@ using Shopping.API.DataAccess.Models;
 
 namespace Shopping.API.BusinessLogic.Profiles
 {
-    public class UserProfile : Profile
+    public class AccountProfile : Profile
     {
-        public UserProfile()
+        public AccountProfile()
         {
-            CreateMap<UserForSignUpDto, User>();
+            CreateMap<AccountForSignUpDto, Account>();
         }
     }
 }

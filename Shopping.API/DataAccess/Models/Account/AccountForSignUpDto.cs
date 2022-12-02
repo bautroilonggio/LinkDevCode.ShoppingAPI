@@ -2,7 +2,7 @@
 
 namespace Shopping.API.DataAccess.Models
 {
-    public class UserForSignUpDto
+    public class AccountForSignUpDto
     {
         [Required]
         [MaxLength(100)]
@@ -37,7 +37,7 @@ namespace Shopping.API.DataAccess.Models
         [MaxLength(10)]
         public string Role { get; set; }
 
-        public UserForSignUpDto(string userName, string password,
+        public AccountForSignUpDto(string userName, string password,
             string firstName, string lastName, DateOnly dateOfBirth,
             string phone, string email, string address, string role)
         {

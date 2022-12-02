@@ -14,7 +14,7 @@ namespace Shopping.API.DataAccess.Models
 
         public string? Description { get; set; }
 
-        public double Price { get; set; }
+        public double SellingPrice { get; set; }
 
         public int TotalQuantity { get; set; }
 
