@@ -87,18 +87,22 @@ namespace Shopping.API.BusinessLogic.Services
                 account.Email, account.Password, account.LastName + account.FirstName, true);
         }
 
-        public async Task<string> SignInFirebaseAsync(AccountForSignInDto account)
+        public async Task<object> SignInFirebaseAsync(AccountForSignInDto account)
         {
             var auth = new FirebaseAuthProvider(
                 new FirebaseConfig(_configuration["Authentication:Firebase:WebAPIKey"]));
 
             var t = await auth.SignInWithEmailAndPasswordAsync(account.UserName, account.Password);
 
-            
+            var data = new
+            {
+                User = t.User,
+                AccessToken = t.FirebaseToken,
+                RefreshToken = t.RefreshToken,
+                ExpiresIn = t.ExpiresIn
+            };
 
-            string token = t.FirebaseToken;
-
-            return token;
+            return data;
         }
 
         public async Task<(string, RefreshTokenDto)> RefreshTokenAsync(string refreshToken)

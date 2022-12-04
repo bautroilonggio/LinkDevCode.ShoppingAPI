@@ -10,7 +10,10 @@ using System.Text.Json;
 
 namespace Shopping.API.Controllers
 {
-    [Route("api/users/u/carts")]
+    /// <summary>
+    /// Controller provides actions for cart management
+    /// </summary>
+    [Route("api/v{version:apiVersion}/users/u/carts")]
     [Authorize]
     [ApiController]
     public class CartController : ControllerBase
@@ -19,6 +22,12 @@ namespace Shopping.API.Controllers
 
         private readonly ICartService _cartService;
 
+        /// <summary>
+        /// Contructor of cart controller
+        /// </summary>
+        /// <param name="logger">Log actions</param>
+        /// <param name="cartService">Provide methods</param>
+        /// <exception cref="ArgumentNullException">Check for null</exception>
         public CartController(ILogger<CartController> logger, ICartService cartService)
         {
             _logger = logger ?? 
@@ -27,7 +36,16 @@ namespace Shopping.API.Controllers
                 throw new ArgumentNullException(nameof(cartService));
         }
 
+        /// <summary>
+        /// Get carts of account
+        /// </summary>
+        /// <param name="searchQuery"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <returns>ActionResult></returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<CartDto>>> GetCartsAsync(
             string? searchQuery, int pageNumber = 1, int pageSize = 5)
         {
@@ -51,7 +69,15 @@ namespace Shopping.API.Controllers
             return Ok(carts);
         }
 
+        /// <summary>
+        /// Add product to user's carts
+        /// </summary>
+        /// <param name="cart">Information cart</param>
+        /// <returns>ActionResult</returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<CartDto>> CreateCartAsync(CartForCreateDto cart)
         {
             try
@@ -87,7 +113,15 @@ namespace Shopping.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update user's cart
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <param name="cart"></param>
+        /// <returns>ActionResult</returns>
         [HttpPut("{cartId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> UpdateCartAsync(int cartId, CartForUpdateDto cart)
         {
             var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -102,7 +136,14 @@ namespace Shopping.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete product in user's carts
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <returns></returns>
         [HttpDelete("{cartId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeleteCartAsync(int cartId)
         {
             var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);

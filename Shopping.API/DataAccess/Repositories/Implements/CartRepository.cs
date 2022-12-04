@@ -21,7 +21,7 @@ namespace Shopping.API.DataAccess.Repositories
             // collection to start from
             var colection = _context.Carts as IQueryable<Cart>;
 
-            colection = colection.Where(c => c.UserId == userId);
+            colection = colection.Include(c => c.Product).Where(c => c.UserId == userId);
 
             if (!string.IsNullOrWhiteSpace(searchQuery))
             {

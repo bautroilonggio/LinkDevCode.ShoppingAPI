@@ -40,11 +40,18 @@ namespace Shopping.API.BusinessLogic.Services
         public async Task<ReviewDto?> CreateReviewAsync(string userName, int productId, ReviewForCreateDto review)
         {
             var userEntity = await _unitOfWork.AccountRepository
-                                   .GetUserIncludeReviewsAsync(u => u.UserName == userName);
+                                   .GetUserIncludeAllAsync(u => u.UserName == userName);
 
             if(userEntity == null)
             {
                 return null;
+            }
+
+            if(!userEntity.Orders.Any(
+                o => o.OrderDetails.Any(od => od.ProductId == productId)
+                    && o.Status == "Da nhan hang"))
+            {
+                throw new Exception("Ban can mua san pham thi moi duoc viet danh gia!");
             }
 
             var productEntity = await _unitOfWork.ProductRepository.GetSingleAsync(productId);
@@ -57,7 +64,7 @@ namespace Shopping.API.BusinessLogic.Services
             if(await _unitOfWork.ReviewRepository.IsExistAsync(
                 r => r.UserId == userEntity.Id && r.ProductId == productEntity.Id))
             {
-                throw new Exception($"Tai khoan co username {userName} da tung danh gia san pham nay!");
+                throw new Exception($"Ban da tung danh gia san pham nay!");
             }
 
             var reviewEntity = _mapper.Map<Review>(review);

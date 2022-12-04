@@ -9,7 +9,10 @@ using System.Text.Json;
 
 namespace Shopping.API.Controllers
 {
-    [Route("api/users/u/orders")]
+    /// <summary>
+    /// Controller provides actions for order management
+    /// </summary>
+    [Route("api/v{version:apiVersion}/users/u/orders")]
     [Authorize]
     [ApiController]
     public class OrderController : ControllerBase
@@ -18,6 +21,12 @@ namespace Shopping.API.Controllers
 
         private readonly IOrderService _orderService;
 
+        /// <summary>
+        /// Contructor of order controller
+        /// </summary>
+        /// <param name="logger">Log actions</param>
+        /// <param name="orderService">Provide methods</param>
+        /// <exception cref="ArgumentNullException">Check for null</exception>
         public OrderController(ILogger<OrderController> logger, IOrderService orderService)
         {
             _logger = logger ??
@@ -26,7 +35,16 @@ namespace Shopping.API.Controllers
                 throw new ArgumentNullException(nameof(orderService));
         }
 
+        /// <summary>
+        /// Get orders of account
+        /// </summary>
+        /// <param name="searchQuery"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <returns>ActionResult></returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrdersAsync(
             string? searchQuery, int pageNumber = 1, int pageSize = 10)
         {
@@ -50,7 +68,15 @@ namespace Shopping.API.Controllers
             return Ok(orders);
         }
 
+        /// <summary>
+        /// Create a new order
+        /// </summary>
+        /// <param name="order">The information of new order</param>
+        /// <returns>ActionResult</returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<OrderDto>> CreateOrderAsync(OrderForCreateDto order)
         {
             try
@@ -81,8 +107,16 @@ namespace Shopping.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update order by ADMIN account
+        /// </summary>
+        /// <param name="orderId">The id of order that will be updated</param>
+        /// <param name="order">The information update of order</param>
+        /// <returns>ActionResult</returns>
         [Authorize(Roles = "ADMIN")]
         [HttpPut("{orderId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> UpdateOrderAsync(int orderId, OrderForUpdateDto order)
         {
             var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -99,8 +133,15 @@ namespace Shopping.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete order by ADMIN account
+        /// </summary>
+        /// <param name="orderId">The id of order that will be deleted</param>
+        /// <returns></returns>
         [Authorize(Roles = "ADMIN")]
         [HttpDelete("{orderId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeleteOrderAsync(int orderId)
         {
             var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);

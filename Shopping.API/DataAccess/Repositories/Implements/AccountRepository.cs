@@ -28,5 +28,14 @@ namespace Shopping.API.DataAccess.Repositories
         {
             return await _context.Accounts.Include(u => u.Orders).Where(where).FirstOrDefaultAsync();
         }
+
+        public async Task<Account?> GetUserIncludeAllAsync(Expression<Func<Account, bool>> where)
+        {
+            return await _context.Accounts.Include(u => u.Reviews)
+                                          .Include(u => u.Carts)
+                                          .Include(u => u.Orders)
+                                          .ThenInclude(o => o.OrderDetails)
+                                          .Where(where).FirstOrDefaultAsync();
+        }
     }
 }

@@ -10,6 +10,9 @@ using System.Security.Claims;
 
 namespace Shopping.API.Controllers
 {
+    /// <summary>
+    /// Controller provides actions for account management
+    /// </summary>
     [Route("api/accounts")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -18,6 +21,12 @@ namespace Shopping.API.Controllers
 
         private readonly IAccountService _accountService;
 
+        /// <summary>
+        /// Contructor of account controller
+        /// </summary>
+        /// <param name="logger">Log actions</param>
+        /// <param name="accountService">Provide methods</param>
+        /// <exception cref="ArgumentNullException">Check for null</exception>
         public AccountController(ILogger<AccountController> logger,
             IAccountService accountService)
         {
@@ -27,8 +36,16 @@ namespace Shopping.API.Controllers
                 throw new ArgumentNullException(nameof(accountService));
         }
 
+        /// <summary>
+        /// Create a new account by ADMIN account
+        /// </summary>
+        /// <param name="account">Information new account</param>
+        /// <returns>ActionResult</returns>
         [Authorize(Roles = "ADMIN")]
         [HttpPost("signup")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> SignUpAsync(AccountForSignUpDto account)
         {
             try
@@ -57,22 +74,19 @@ namespace Shopping.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Sign in account
+        /// </summary>
+        /// <param name="account">Information sign in of account</param>
+        /// <returns>ActionResult</returns>
         [HttpPost("signin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> SignInAsync(AccountForSignInDto account)
         {
             try
             {
                 var (accessToken, refreshToken) = await _accountService.SignInAsync(account);
-                if (accessToken == null || refreshToken == null)
-                {
-                    _logger.LogInformation($"Dang nhap vao tai khoan {account.UserName} khong thanh cong do khong tao duoc token");
-
-                    return Unauthorized(new ResponseAPI
-                    {
-                        Status = false,
-                        Message = "Sign In failed!"
-                    });
-                }
 
                 _logger.LogInformation($"Tai khoan {account.UserName} da dang nhap thanh cong");
 
@@ -103,33 +117,53 @@ namespace Shopping.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Sign in with firebase account
+        /// </summary>
+        /// <param name="account">Information of firebase account</param>
+        /// <returns>ActionResult</returns>
         [HttpPost("signin-firebase")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> SignInFirebaseAsync(AccountForSignInDto account)
         {
-            var token = await _accountService.SignInFirebaseAsync(account);
-            if (string.IsNullOrEmpty(token))
+            try
             {
-                return Unauthorized();
+                var data = await _accountService.SignInFirebaseAsync(account);
+
+                return Ok(new ResponseAPI
+                {
+                    Status = true,
+                    Message = "Sign In success!",
+                    Data = data
+                });
             }
-            return Ok(token);
+            catch(Exception e)
+            {
+                return Unauthorized(e.Message);
+            }
         }
 
+        /// <summary>
+        /// Create a new firebase account
+        /// </summary>
+        /// <param name="account">Information new firebase account</param>
+        /// <returns>An ActionResult</returns>
         [HttpPost("signup-firebase")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> SignUpFirebaseAsync(AccountForSignUpDto account)
         {
             await _accountService.SignUpFirebaseAsync(account);
             return Ok();
         }
 
-        //[HttpPost("signin-google")]
-        //public async Task<ActionResult<string>> SignInGoogleAsync()
-        //{
-        //    var accessToken = await HttpContext.GetTokenAsync(GoogleDefaults.AuthenticationScheme, "access_token");
-
-        //    return Ok(accessToken);
-        //}
-
+        /// <summary>
+        /// Logout account, delete cookie
+        /// </summary>
+        /// <returns>ActionResult</returns>
         [HttpPost("logout")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult LogoutAsync()
         {
             Response.Cookies.Delete("refreshToken");
@@ -142,7 +176,13 @@ namespace Shopping.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Refresh Token
+        /// </summary>
+        /// <returns>ActionResult</returns>
         [HttpPost("refresh-token")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> RefreshTokenAsync()
         {
             try
@@ -184,8 +224,15 @@ namespace Shopping.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete an account by ADMIN account
+        /// </summary>
+        /// <param name="userName">The username of account that with be deleted</param>
+        /// <returns></returns>
         [Authorize(Roles = "ADMIN")]
         [HttpDelete("{userName}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeleteAccountAsync(string userName)
         {
             if(!await _accountService.DeleteAccountAsync(userName))

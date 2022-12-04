@@ -1,0 +1,822 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Shopping.API</name>
+    </assembly>
+    <members>
+        <member name="P:Shopping.API.Commons.PaginationMetadata.TotalItemCount">
+            <summary>
+            Tổng số lượng mục
+            </summary>
+        </member>
+        <member name="P:Shopping.API.Commons.PaginationMetadata.TotalPageCount">
+            <summary>
+            Tổng số trang
+            </summary>
+        </member>
+        <member name="P:Shopping.API.Commons.PaginationMetadata.PageSize">
+            <summary>
+            Kích thước trang
+            </summary>
+        </member>
+        <member name="P:Shopping.API.Commons.PaginationMetadata.CurrentPage">
+            <summary>
+            Trang hiện tại
+            </summary>
+        </member>
+        <member name="T:Shopping.API.Controllers.AccountController">
+            <summary>
+            Controller provides actions for account management
+            </summary>
+        </member>
+        <member name="M:Shopping.API.Controllers.AccountController.#ctor(Microsoft.Extensions.Logging.ILogger{Shopping.API.Controllers.AccountController},Shopping.API.BusinessLogic.Services.IAccountService)">
+            <summary>
+            Contructor of account controller
+            </summary>
+            <param name="logger">Log actions</param>
+            <param name="accountService">Provide methods</param>
+            <exception cref="T:System.ArgumentNullException">Check for null</exception>
+        </member>
+        <member name="M:Shopping.API.Controllers.AccountController.SignUpAsync(Shopping.API.DataAccess.Models.AccountForSignUpDto)">
+            <summary>
+            Create a new account by ADMIN account
+            </summary>
+            <param name="account">Information new account</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.AccountController.SignInAsync(Shopping.API.DataAccess.Models.AccountForSignInDto)">
+            <summary>
+            Sign in account
+            </summary>
+            <param name="account">Information sign in of account</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.AccountController.SignInFirebaseAsync(Shopping.API.DataAccess.Models.AccountForSignInDto)">
+            <summary>
+            Sign in with firebase account
+            </summary>
+            <param name="account">Information of firebase account</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.AccountController.SignUpFirebaseAsync(Shopping.API.DataAccess.Models.AccountForSignUpDto)">
+            <summary>
+            Create a new firebase account
+            </summary>
+            <param name="account">Information new firebase account</param>
+            <returns>An ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.AccountController.LogoutAsync">
+            <summary>
+            Logout account, delete cookie
+            </summary>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.AccountController.RefreshTokenAsync">
+            <summary>
+            Refresh Token
+            </summary>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.AccountController.DeleteAccountAsync(System.String)">
+            <summary>
+            Delete an account by ADMIN account
+            </summary>
+            <param name="userName">The username of account that with be deleted</param>
+            <returns></returns>
+        </member>
+        <member name="T:Shopping.API.Controllers.CartController">
+            <summary>
+            Controller provides actions for cart management
+            </summary>
+        </member>
+        <member name="M:Shopping.API.Controllers.CartController.#ctor(Microsoft.Extensions.Logging.ILogger{Shopping.API.Controllers.CartController},Shopping.API.BusinessLogic.Services.ICartService)">
+            <summary>
+            Contructor of cart controller
+            </summary>
+            <param name="logger">Log actions</param>
+            <param name="cartService">Provide methods</param>
+            <exception cref="T:System.ArgumentNullException">Check for null</exception>
+        </member>
+        <member name="M:Shopping.API.Controllers.CartController.GetCartsAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get carts of account
+            </summary>
+            <param name="searchQuery"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <returns>ActionResult></returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.CartController.CreateCartAsync(Shopping.API.DataAccess.Models.CartForCreateDto)">
+            <summary>
+            Add product to user's carts
+            </summary>
+            <param name="cart">Information cart</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.CartController.UpdateCartAsync(System.Int32,Shopping.API.DataAccess.Models.CartForUpdateDto)">
+            <summary>
+            Update user's cart
+            </summary>
+            <param name="cartId"></param>
+            <param name="cart"></param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.CartController.DeleteCartAsync(System.Int32)">
+            <summary>
+            Delete product in user's carts
+            </summary>
+            <param name="cartId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Shopping.API.Controllers.OrderController">
+            <summary>
+            Controller provides actions for order management
+            </summary>
+        </member>
+        <member name="M:Shopping.API.Controllers.OrderController.#ctor(Microsoft.Extensions.Logging.ILogger{Shopping.API.Controllers.OrderController},Shopping.API.BusinessLogic.Services.IOrderService)">
+            <summary>
+            Contructor of order controller
+            </summary>
+            <param name="logger">Log actions</param>
+            <param name="orderService">Provide methods</param>
+            <exception cref="T:System.ArgumentNullException">Check for null</exception>
+        </member>
+        <member name="M:Shopping.API.Controllers.OrderController.GetOrdersAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get orders of account
+            </summary>
+            <param name="searchQuery"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <returns>ActionResult></returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.OrderController.CreateOrderAsync(Shopping.API.DataAccess.Models.OrderForCreateDto)">
+            <summary>
+            Create a new order
+            </summary>
+            <param name="order">The information of new order</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.OrderController.UpdateOrderAsync(System.Int32,Shopping.API.DataAccess.Models.OrderForUpdateDto)">
+            <summary>
+            Update order by ADMIN account
+            </summary>
+            <param name="orderId">The id of order that will be updated</param>
+            <param name="order">The information update of order</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.OrderController.DeleteOrderAsync(System.Int32)">
+            <summary>
+            Delete order by ADMIN account
+            </summary>
+            <param name="orderId">The id of order that will be deleted</param>
+            <returns></returns>
+        </member>
+        <member name="T:Shopping.API.Controllers.ProductController">
+            <summary>
+            Controller provides actions for product management
+            </summary>
+        </member>
+        <member name="M:Shopping.API.Controllers.ProductController.#ctor(Shopping.API.BusinessLogic.Services.IProductService)">
+            <summary>
+            Contructor of product controller
+            </summary>
+            <param name="productService">Provide methods</param>
+            <exception cref="T:System.ArgumentNullException">Check for null</exception>
+        </member>
+        <member name="M:Shopping.API.Controllers.ProductController.GetProductsAsync(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Get all products
+            </summary>
+            <param name="name"></param>
+            <param name="searchQuery"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.ProductController.GetProductAsync(System.Int32)">
+            <summary>
+            Get products by id
+            </summary>
+            <param name="productId">The id of product</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.ProductController.CreateProductAsync(Shopping.API.DataAccess.Models.Product.ProductForCreateDto)">
+            <summary>
+            Create a new order by ADMIN account
+            </summary>
+            <param name="product">The information of new product</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.ProductController.UpdateProductAsync(System.Int32,Shopping.API.DataAccess.Models.ProductForUpdateDto)">
+            <summary>
+            Update information product by ADMIN account
+            </summary>
+            <param name="productId">The id of product that will be updated</param>
+            <param name="product">The information update of product</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.ProductController.DeleteProductAsync(System.Int32)">
+            <summary>
+            Delete product by ADMIN account
+            </summary>
+            <param name="productId">The Id of product that will be deleted</param>
+            <returns></returns>
+        </member>
+        <member name="T:Shopping.API.Controllers.ReviewController">
+            <summary>
+            Controller provides actions for review management
+            </summary>
+        </member>
+        <member name="M:Shopping.API.Controllers.ReviewController.#ctor(Shopping.API.BusinessLogic.Services.IReviewService)">
+            <summary>
+            Contructor of review controller
+            </summary>
+            <param name="reviewService">Provide methods</param>
+            <exception cref="T:System.ArgumentNullException">Check for null</exception>
+        </member>
+        <member name="M:Shopping.API.Controllers.ReviewController.GetReviewsAsync(System.Nullable{System.Int32},System.Int32,System.Int32)">
+            <summary>
+            Get reivews to product
+            </summary>
+            <param name="rating"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.ReviewController.CreateReviewAsync(System.Int32,Shopping.API.DataAccess.Models.ReviewForCreateDto)">
+            <summary>
+            Create vew review to product
+            </summary>
+            <param name="productId">The id of product that will be rated</param>
+            <param name="review">The information of review</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.ReviewController.UpdateReviewAsync(System.Int32,System.Int32,Shopping.API.DataAccess.Models.ReviewForUpdateDto)">
+            <summary>
+            Update information of review to product
+            </summary>
+            <param name="productId">The id of product that is rated</param>
+            <param name="reviewId">The id of review that will be updated</param>
+            <param name="review">The information of review</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.ReviewController.DeleteReviewAsync(System.Int32,System.Int32)">
+            <summary>
+            Delete a review to product
+            </summary>
+            <param name="productId">The id of product</param>
+            <param name="reviewId">The id of review</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.AccountForSignInDto">
+            <summary>
+            A DTO for an account sign in
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.AccountForSignInDto.UserName">
+            <summary>
+            Enter username for sign in
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.AccountForSignInDto.Password">
+            <summary>
+            Enter password for sign in
+            </summary>
+        </member>
+        <member name="M:Shopping.API.DataAccess.Models.AccountForSignInDto.#ctor(System.String,System.String)">
+            <summary>
+            Constructor of AccountForSignInDto
+            </summary>
+            <param name="userName">The username of account</param>
+            <param name="password">The password of account</param>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.AccountForSignUpDto">
+            <summary>
+            A DTO for an account sign up
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.AccountForSignUpDto.UserName">
+            <summary>
+            Username of new account
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.AccountForSignUpDto.Password">
+            <summary>
+            Password of new account
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.AccountForSignUpDto.FirstName">
+            <summary>
+            FirstName of new account
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.AccountForSignUpDto.LastName">
+            <summary>
+            LastName of new account
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.AccountForSignUpDto.DateOfBirth">
+            <summary>
+            Birthday of new account
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.AccountForSignUpDto.Phone">
+            <summary>
+            Phone number of new account
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.AccountForSignUpDto.Email">
+            <summary>
+            Email of new account
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.AccountForSignUpDto.Address">
+            <summary>
+            Address of new account
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.AccountForSignUpDto.Role">
+            <summary>
+            Role of new account
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.RefreshTokenDto">
+            <summary>
+            A DTO for a refresh token of an account
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.RefreshTokenDto.RefreshToken">
+            <summary>
+            String of refresh token
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.RefreshTokenDto.RefreshTokenCreatedAt">
+            <summary>
+            Creation time of refresh token
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.RefreshTokenDto.RefreshTokenExpries">
+            <summary>
+            Expiration time of refresh token
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.CartDto">
+            <summary>
+            A DTO for an cart of an account
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.CartDto.Id">
+            <summary>
+            Id of the cart
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.CartDto.ProductName">
+            <summary>
+            Name of product in the cart
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.CartDto.Quantity">
+            <summary>
+            Quantity of product in the cart
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.CartDto.Price">
+            <summary>
+            The price to buy the product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.CartDto.UserName">
+            <summary>
+            Name of account buying product
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.CartForCreateDto">
+            <summary>
+            A DTO for an cart to add products
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.CartForCreateDto.ProductId">
+            <summary>
+            Id of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.CartForCreateDto.Quantity">
+            <summary>
+            Quantity of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.CartForCreateDto.Price">
+            <summary>
+            The price to buy the product
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.CartForUpdateDto">
+            <summary>
+            A DTO for an cart to update
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.CartForUpdateDto.Quantity">
+            <summary>
+            Quantity of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.CartForUpdateDto.Price">
+            <summary>
+            The price to buy the product
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.CartForCreateOrderDto">
+            <summary>
+            A DTO for an cart to create an order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.CartForCreateOrderDto.Id">
+            <summary>
+            Id of cart in order
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.OrderDetailDto">
+            <summary>
+            A DTO for OrderDetail of an order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderDetailDto.ProductName">
+            <summary>
+            Name of product in order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderDetailDto.Quantity">
+            <summary>
+            Quantity of product in order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderDetailDto.Price">
+            <summary>
+            The price to buy the product
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.OrderDto">
+            <summary>
+            A DTO for order include orders detail
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderDto.Id">
+            <summary>
+            Id of order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderDto.OrderDate">
+            <summary>
+            Order date of order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderDto.ShipName">
+            <summary>
+            Name of shipper of order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderDto.ShipAddress">
+            <summary>
+            Address of shipper of order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderDto.ShipPhone">
+            <summary>
+            Phone number of shipper of order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderDto.Status">
+            <summary>
+            Status of order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderDto.TotalPayment">
+            <summary>
+            Total payment of order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderDto.NumberOfOrderDetails">
+            <summary>
+            Number of products types in the order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderDto.OrderDetails">
+            <summary>
+            Information of products types in the order
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.OrderForCreateDto">
+            <summary>
+            A DTO for order to create new order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderForCreateDto.OrderDate">
+            <summary>
+            Order date of the order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderForCreateDto.ShipName">
+            <summary>
+            Name of shipper of the order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderForCreateDto.ShipAddress">
+            <summary>
+            Address of shipper of the order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderForCreateDto.ShipPhone">
+            <summary>
+            Phone number of shipper of the order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderForCreateDto.Status">
+            <summary>
+            Status of the order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderForCreateDto.TotalPayment">
+            <summary>
+            Total payment of the order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderForCreateDto.Carts">
+            <summary>
+            Carts in the order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderForCreateDto.OrderDetails">
+            <summary>
+            Order Details in the order
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.OrderForUpdateDto">
+            <summary>
+            A DTO for order to update
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderForUpdateDto.ShipName">
+            <summary>
+            Name of shipper of the order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderForUpdateDto.ShipAddress">
+            <summary>
+            Address of shipper of the order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderForUpdateDto.ShipPhone">
+            <summary>
+            Phone number of shipper of the order
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.OrderForUpdateDto.Status">
+            <summary>
+            Status of the order
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.ProductDetailDto">
+            <summary>
+            A DTO for product include list of reviews
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDetailDto.Id">
+            <summary>
+            Id of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDetailDto.Name">
+            <summary>
+            Name of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDetailDto.Brand">
+            <summary>
+            Brand of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDetailDto.Category">
+            <summary>
+            Category of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDetailDto.Description">
+            <summary>
+            Description of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDetailDto.SellingPrice">
+            <summary>
+            Selling price of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDetailDto.TotalQuantity">
+            <summary>
+            Total quantity of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDetailDto.CreateAt">
+            <summary>
+            Creation time of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDetailDto.NumberOfReview">
+            <summary>
+            Number of review to product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDetailDto.Reviews">
+            <summary>
+            List of reviews to product
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.ProductDto">
+            <summary>
+            A DTO for product without list of reviews
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDto.Id">
+            <summary>
+            Id of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDto.Name">
+            <summary>
+            Name of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDto.SellingPrice">
+            <summary>
+            Selling price of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDto.TotalQuantity">
+            <summary>
+            total quantity of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDto.CreateAt">
+            <summary>
+            Creation time of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductDto.NumberOfReview">
+            <summary>
+            Number of reviews to product
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.Product.ProductForCreateDto">
+            <summary>
+            A DTO for product for create
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.Product.ProductForCreateDto.Name">
+            <summary>
+            Name of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.Product.ProductForCreateDto.Brand">
+            <summary>
+            Brand of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.Product.ProductForCreateDto.Category">
+            <summary>
+            Category of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.Product.ProductForCreateDto.Description">
+            <summary>
+            Description of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.Product.ProductForCreateDto.SellingPrice">
+            <summary>
+            Selling price of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.Product.ProductForCreateDto.TotalQuantity">
+            <summary>
+            Total quantity of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.Product.ProductForCreateDto.CreateAt">
+            <summary>
+            Creation time of order
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.ProductForUpdateDto">
+            <summary>
+            A DTO for product to update
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductForUpdateDto.Name">
+            <summary>
+            Name of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductForUpdateDto.Brand">
+            <summary>
+            Brand of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductForUpdateDto.Category">
+            <summary>
+            Category of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductForUpdateDto.Description">
+            <summary>
+            Description of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductForUpdateDto.SellingPrice">
+            <summary>
+            Selling price of product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ProductForUpdateDto.TotalQuantity">
+            <summary>
+            Total quantity of product
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.ReviewDto">
+            <summary>
+            A DTO for review 
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ReviewDto.Id">
+            <summary>
+            Id of review
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ReviewDto.Rating">
+            <summary>
+            Rating for product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ReviewDto.Content">
+            <summary>
+            Content of review
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ReviewDto.CreateAt">
+            <summary>
+            Creation time of review
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ReviewDto.UserName">
+            <summary>
+            Name of author of the review
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.ReviewForCreateDto">
+            <summary>
+            A DTO for review to create
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ReviewForCreateDto.Rating">
+            <summary>
+            Rating for product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ReviewForCreateDto.Content">
+            <summary>
+            Content of review
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ReviewForCreateDto.CreateAt">
+            <summary>
+            Creation time of review
+            </summary>
+        </member>
+        <member name="T:Shopping.API.DataAccess.Models.ReviewForUpdateDto">
+            <summary>
+            A DTO for review to update
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ReviewForUpdateDto.Rating">
+            <summary>
+            Rating for product
+            </summary>
+        </member>
+        <member name="P:Shopping.API.DataAccess.Models.ReviewForUpdateDto.Content">
+            <summary>
+            Content of review
+            </summary>
+        </member>
+        <member name="T:Shopping.API.Migrations.ShoppingDBInitial">
+            <inheritdoc />
+        </member>
+        <member name="M:Shopping.API.Migrations.ShoppingDBInitial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Shopping.API.Migrations.ShoppingDBInitial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Shopping.API.Migrations.ShoppingDBInitial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

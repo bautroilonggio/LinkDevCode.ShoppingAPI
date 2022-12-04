@@ -9,19 +9,36 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace Shopping.API.Controllers
 {
-    [Route("api/products/{productId}/reviews")]
+    /// <summary>
+    /// Controller provides actions for review management
+    /// </summary>
+    [Route("api/v{version:apiVersion}/products/{productId}/reviews")]
     [ApiController]
     public class ReviewController : ControllerBase
     {
         private readonly IReviewService _reviewService;
 
+        /// <summary>
+        /// Contructor of review controller
+        /// </summary>
+        /// <param name="reviewService">Provide methods</param>
+        /// <exception cref="ArgumentNullException">Check for null</exception>
         public ReviewController(IReviewService reviewService)
         {
             _reviewService = reviewService ??
                 throw new ArgumentNullException(nameof(reviewService));
         }
 
+        /// <summary>
+        /// Get reivews to product
+        /// </summary>
+        /// <param name="rating"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <returns>ActionResult</returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetReviewsAsync(
             int? rating, int pageNumber = 1, int pageSize = 10)
         {
@@ -39,8 +56,17 @@ namespace Shopping.API.Controllers
             return Ok(reviews);
         }
 
+        /// <summary>
+        /// Create vew review to product
+        /// </summary>
+        /// <param name="productId">The id of product that will be rated</param>
+        /// <param name="review">The information of review</param>
+        /// <returns>ActionResult</returns>
         [Authorize]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ReviewDto>> CreateReviewAsync(int productId, ReviewForCreateDto review)
         {
             try
@@ -69,8 +95,17 @@ namespace Shopping.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update information of review to product
+        /// </summary>
+        /// <param name="productId">The id of product that is rated</param>
+        /// <param name="reviewId">The id of review that will be updated</param>
+        /// <param name="review">The information of review</param>
+        /// <returns>ActionResult</returns>
         [Authorize]
         [HttpPut("{reviewId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> UpdateReviewAsync(
             int productId, int reviewId, ReviewForUpdateDto review)
         {
@@ -85,8 +120,16 @@ namespace Shopping.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete a review to product
+        /// </summary>
+        /// <param name="productId">The id of product</param>
+        /// <param name="reviewId">The id of review</param>
+        /// <returns>ActionResult</returns>
         [Authorize]
         [HttpDelete("{reviewId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeleteReviewAsync(int productId, int reviewId)
         {
             // Lấy userName từ người dùng hiện tại
