@@ -65,12 +65,6 @@
             <param name="account">Information new firebase account</param>
             <returns>An ActionResult</returns>
         </member>
-        <member name="M:Shopping.API.Controllers.AccountController.LogoutAsync">
-            <summary>
-            Logout account, delete cookie
-            </summary>
-            <returns>ActionResult</returns>
-        </member>
         <member name="M:Shopping.API.Controllers.AccountController.RefreshTokenAsync">
             <summary>
             Refresh Token

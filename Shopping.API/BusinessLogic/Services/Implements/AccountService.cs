@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using Firebase.Auth;
+using FirebaseAdmin.Auth;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.IdentityModel.Tokens;
 using Shopping.API.DataAccess;
 using Shopping.API.DataAccess.Entities;
 using Shopping.API.DataAccess.Models;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.WebSockets;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -94,6 +97,11 @@ namespace Shopping.API.BusinessLogic.Services
 
             var t = await auth.SignInWithEmailAndPasswordAsync(account.UserName, account.Password);
 
+            if(t == null)
+            {
+                throw new Exception("Email or password is invalid!");
+            }
+
             var data = new
             {
                 User = t.User,
@@ -103,6 +111,32 @@ namespace Shopping.API.BusinessLogic.Services
             };
 
             return data;
+        }
+
+        //public async Task<object> SignInGoogleAsync(AccountForSignInDto account)
+        //{
+        //    var auth = new FirebaseAuthProvider(
+        //        new FirebaseConfig(_configuration["Authentication:Firebase:WebAPIKey"]));
+
+            
+        //}
+
+        public async Task<bool> SignOutAsync(string userName)
+        {
+            var account = await _unitOfWork.AccountRepository
+                .GetSingleConditionsAsync(a => a.UserName == userName);
+
+            if(account == null)
+            {
+                return false;
+            }
+
+            // Xóa refresh token
+            account.RefreshToken = "";
+
+            await _unitOfWork.CommitAsync();
+
+            return true;
         }
 
         public async Task<(string, RefreshTokenDto)> RefreshTokenAsync(string refreshToken)

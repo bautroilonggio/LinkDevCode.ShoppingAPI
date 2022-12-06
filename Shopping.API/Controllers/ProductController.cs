@@ -36,7 +36,7 @@ namespace Shopping.API.Controllers
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
         /// <returns>ActionResult</returns>
-        [HttpGet]
+        [HttpGet, Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsAsync(

@@ -1,10 +1,12 @@
 using FirebaseAdmin;
+using FirebaseAdminAuthentication.DependencyInjection.Extensions;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -85,16 +87,16 @@ builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
 
-
-FirebaseApp.Create(new AppOptions
+builder.Services.AddSingleton(FirebaseApp.Create(new AppOptions
 {
-    Credential = GoogleCredential.FromFile(@"D:\WorkSpace\FPT\Traning\Project\Shopping\LinkDevCode.Shopping\Shopping.API\linkdevcodeshoppingapi-firebase-adminsdk-9ho0t-eb4df4e2e7.json")
-});
+    //Credential = GoogleCredential.FromFile(@"D:\WorkSpace\FPT\Traning\Project\Shopping\LinkDevCode.Shopping\Shopping.API\linkdevcodeshoppingapi-firebase-adminsdk-9ho0t-eb4df4e2e7.json")
+    Credential = GoogleCredential.FromJson(builder.Configuration["Authentication:Firebase:Config"])
+}));
 
 
 builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+    .AddAuthentication("Bearer")
+    .AddJwtBearer("Project", options =>
     {
         options.TokenValidationParameters = new()
         {
@@ -110,43 +112,23 @@ builder.Services
     .AddJwtBearer("Firebase", options =>
     {
         options.Authority = builder.Configuration["Authentication:Firebase:Issuer"];
-        options.TokenValidationParameters = new()
+        options.TokenValidationParameters = new TokenValidationParameters()
         {
             ValidateIssuer = true,
             ValidateAudience = true,
+            ValidateLifetime = true,
             ValidIssuer = builder.Configuration["Authentication:Firebase:Issuer"],
             ValidAudience = builder.Configuration["Authentication:Firebase:Audience"],
         };
     });
 
-//builder.Services
-//    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer("Firebase", options =>
-//    {
-//        options.Authority = builder.Configuration["Authentication:Firebase:Issuer"];
-//        options.TokenValidationParameters = new()
-//        {
-//            ValidateIssuer = true,
-//            ValidateAudience = true,
-//            ValidIssuer = builder.Configuration["Authentication:Firebase:Issuer"],
-//            ValidAudience = builder.Configuration["Authentication:Firebase:Audience"],
-//        };
-//    });
-
-//builder.Services.AddAuthorization(opt =>
-//{
-//    opt.DefaultPolicy = new AuthorizationPolicyBuilder()
-//    .AddAuthenticationSchemes("Firebase", "AuthDemo")
-//    .RequireAuthenticatedUser()
-//    .Build();
-//});
 
 builder.Services.AddAuthorization(options =>
 {
-    var defaultAuthorizationPolicyBuilder = new AuthorizationPolicyBuilder(
-                                            JwtBearerDefaults.AuthenticationScheme, "Firebase")
-                                            .RequireAuthenticatedUser()
-                                            .Build();
+    options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                                .AddAuthenticationSchemes("Project", "Firebase")
+                                .RequireAuthenticatedUser()
+                                .Build();
 });
 
 //builder.Services

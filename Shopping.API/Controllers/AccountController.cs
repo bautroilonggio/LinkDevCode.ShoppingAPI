@@ -157,24 +157,25 @@ namespace Shopping.API.Controllers
             return Ok();
         }
 
-        /// <summary>
-        /// Logout account, delete cookie
-        /// </summary>
-        /// <returns>ActionResult</returns>
-        [HttpPost("logout")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult LogoutAsync()
-        {
-            Response.Cookies.Delete("refreshToken");
+        ///// <summary>
+        ///// Sign out account
+        ///// </summary>
+        ///// <returns>ActionResult</returns>
+        //[Authorize]
+        //[HttpPost("signout")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<ActionResult> SignOutAsync()
+        //{
+        //    var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (Request.Cookies["refreshToken"] != null)
-            {
-                return BadRequest();
-            }
+        //    if(!await _accountService.SignOutAsync(userName))
+        //    {
+        //        return BadRequest();
+        //    }
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
         /// <summary>
         /// Refresh Token
