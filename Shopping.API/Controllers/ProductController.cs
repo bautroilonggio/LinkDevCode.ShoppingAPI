@@ -31,12 +31,12 @@ namespace Shopping.API.Controllers
         /// <summary>
         /// Get all products
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="searchQuery"></param>
+        /// <param name="name">Product name you want to search</param>
+        /// <param name="searchQuery">Information of product you want to search</param>
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
         /// <returns>ActionResult</returns>
-        [HttpGet, Authorize]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsAsync(
@@ -61,6 +61,7 @@ namespace Shopping.API.Controllers
         /// </summary>
         /// <param name="productId">The id of product</param>
         /// <returns>ActionResult</returns>
+        [Authorize]
         [HttpGet("{productId}", Name = "GetProductById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

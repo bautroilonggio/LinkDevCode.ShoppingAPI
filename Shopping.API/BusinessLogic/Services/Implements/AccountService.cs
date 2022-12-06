@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Firebase.Auth;
 using FirebaseAdmin.Auth;
+using Google.Apis.Auth;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.IdentityModel.Tokens;
 using Shopping.API.DataAccess;
@@ -120,6 +121,7 @@ namespace Shopping.API.BusinessLogic.Services
 
             
         //}
+
 
         public async Task<bool> SignOutAsync(string userName)
         {
