@@ -7,6 +7,7 @@ using Shopping.API.Commons;
 using Shopping.API.DataAccess.Models;
 using System.Net.WebSockets;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Shopping.API.Controllers
 {
@@ -129,7 +130,7 @@ namespace Shopping.API.Controllers
         {
             try
             {
-                var data = await _accountService.SignInFirebaseAsync(account);
+                var data = await _accountService.SignInWithFirebaseAsync(account);
 
                 return Ok(new ResponseAPI
                 {
@@ -155,6 +156,53 @@ namespace Shopping.API.Controllers
         {
             await _accountService.SignUpFirebaseAsync(account);
             return Ok();
+        }
+
+        /// <summary>
+        /// Sign in with google account
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpPost("signin-google")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult> SignInWithGoogleAsync(string idToken)
+        {
+            //try
+            //{
+            //    var data = await _accountService.SignInWithGoogleAsync(idToken);
+
+            //    return Ok(new ResponseAPI
+            //    {
+            //        Status = true,
+            //        Message = "Sign In success!",
+            //        Data = data
+            //    });
+            //}
+            //catch (Exception e)
+            //{
+            //    return Unauthorized(e.Message);
+            //}
+
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties()
+            {
+                RedirectUri = Url.Action("GoogleResponse")
+            });
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities
+                .FirstOrDefault().Claims.Select(claim => new
+                {
+                    claim.Issuer,
+                    claim.OriginalIssuer,
+                    claim.Type,
+                    claim.Value
+                });
+            return Json(claims);
         }
 
         ///// <summary>

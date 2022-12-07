@@ -65,6 +65,12 @@
             <param name="account">Information new firebase account</param>
             <returns>An ActionResult</returns>
         </member>
+        <member name="M:Shopping.API.Controllers.AccountController.SignInWithGoogleAsync(System.String)">
+            <summary>
+            Sign in with google account
+            </summary>
+            <returns>ActionResult</returns>
+        </member>
         <member name="M:Shopping.API.Controllers.AccountController.RefreshTokenAsync">
             <summary>
             Refresh Token

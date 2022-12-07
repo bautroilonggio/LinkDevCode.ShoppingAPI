@@ -91,7 +91,7 @@ namespace Shopping.API.BusinessLogic.Services
                 account.Email, account.Password, account.LastName + account.FirstName, true);
         }
 
-        public async Task<object> SignInFirebaseAsync(AccountForSignInDto account)
+        public async Task<object> SignInWithFirebaseAsync(AccountForSignInDto account)
         {
             var auth = new FirebaseAuthProvider(
                 new FirebaseConfig(_configuration["Authentication:Firebase:WebAPIKey"]));
@@ -114,13 +114,25 @@ namespace Shopping.API.BusinessLogic.Services
             return data;
         }
 
-        //public async Task<object> SignInGoogleAsync(AccountForSignInDto account)
-        //{
-        //    var auth = new FirebaseAuthProvider(
-        //        new FirebaseConfig(_configuration["Authentication:Firebase:WebAPIKey"]));
+        public async Task<object> SignInWithGoogleAsync(string idToken)
+        {
+            FirebaseAuthProvider firebaseAuthProvider = new FirebaseAuthProvider(
+                new FirebaseConfig(_configuration["Authentication:Firebase:WebAPIKey"]));
 
+            FirebaseAuthLink firebaseAuthLink = await firebaseAuthProvider.SignInWithGoogleIdTokenAsync(idToken);
+
+            var data = new
+            {
+                User = firebaseAuthLink.User,
+                AccessToken = firebaseAuthLink.FirebaseToken,
+                RefreshToken = firebaseAuthLink.RefreshToken,
+                ExpiresIn = firebaseAuthLink.ExpiresIn
+            };
             
-        //}
+            
+
+            return data;
+        }
 
 
         public async Task<bool> SignOutAsync(string userName)

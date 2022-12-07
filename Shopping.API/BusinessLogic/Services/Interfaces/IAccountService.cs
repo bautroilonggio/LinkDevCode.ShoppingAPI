@@ -9,7 +9,9 @@ namespace Shopping.API.BusinessLogic.Services
         Task<bool> SignOutAsync(string userName);
         Task<(string, RefreshTokenDto)> RefreshTokenAsync(string refreshToken);
         Task<bool> DeleteAccountAsync(string userName);
-        Task<object> SignInFirebaseAsync(AccountForSignInDto account);
+        Task<object> SignInWithFirebaseAsync(AccountForSignInDto account);
         Task SignUpFirebaseAsync(AccountForSignUpDto account);
+
+        Task<object> SignInWithGoogleAsync(string idToken);
     }
 }

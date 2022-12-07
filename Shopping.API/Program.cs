@@ -1,5 +1,4 @@
 using FirebaseAdmin;
-using FirebaseAdminAuthentication.DependencyInjection.Extensions;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -120,13 +119,19 @@ builder.Services
             ValidIssuer = builder.Configuration["Authentication:Firebase:Issuer"],
             ValidAudience = builder.Configuration["Authentication:Firebase:Audience"],
         };
+    })
+    .AddGoogle("Google", options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+        options.SaveTokens = true;
     });
 
 
 builder.Services.AddAuthorization(options =>
 {
     options.DefaultPolicy = new AuthorizationPolicyBuilder()
-                                .AddAuthenticationSchemes("Project", "Firebase")
+                                .AddAuthenticationSchemes("Project", "Firebase", "Google")
                                 .RequireAuthenticatedUser()
                                 .Build();
 });
