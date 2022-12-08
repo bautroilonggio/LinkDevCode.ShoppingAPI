@@ -119,19 +119,13 @@ builder.Services
             ValidIssuer = builder.Configuration["Authentication:Firebase:Issuer"],
             ValidAudience = builder.Configuration["Authentication:Firebase:Audience"],
         };
-    })
-    .AddGoogle("Google", options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-        options.SaveTokens = true;
     });
 
 
 builder.Services.AddAuthorization(options =>
 {
     options.DefaultPolicy = new AuthorizationPolicyBuilder()
-                                .AddAuthenticationSchemes("Project", "Firebase", "Google")
+                                .AddAuthenticationSchemes("Project", "Firebase")
                                 .RequireAuthenticatedUser()
                                 .Build();
 });
