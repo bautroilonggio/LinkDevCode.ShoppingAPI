@@ -114,45 +114,6 @@ namespace Shopping.API.BusinessLogic.Services
             return data;
         }
 
-        public async Task<object> SignInWithGoogleAsync(string idToken)
-        {
-            FirebaseAuthProvider firebaseAuthProvider = new FirebaseAuthProvider(
-                new FirebaseConfig(_configuration["Authentication:Firebase:WebAPIKey"]));
-
-            FirebaseAuthLink firebaseAuthLink = await firebaseAuthProvider.SignInWithGoogleIdTokenAsync(idToken);
-
-            var data = new
-            {
-                User = firebaseAuthLink.User,
-                AccessToken = firebaseAuthLink.FirebaseToken,
-                RefreshToken = firebaseAuthLink.RefreshToken,
-                ExpiresIn = firebaseAuthLink.ExpiresIn
-            };
-            
-            
-
-            return data;
-        }
-
-
-        public async Task<bool> SignOutAsync(string userName)
-        {
-            var account = await _unitOfWork.AccountRepository
-                .GetSingleConditionsAsync(a => a.UserName == userName);
-
-            if(account == null)
-            {
-                return false;
-            }
-
-            // Xóa refresh token
-            account.RefreshToken = "";
-
-            await _unitOfWork.CommitAsync();
-
-            return true;
-        }
-
         public async Task<(string, RefreshTokenDto)> RefreshTokenAsync(string refreshToken)
         {
             var accountEntity = await _unitOfWork.AccountRepository

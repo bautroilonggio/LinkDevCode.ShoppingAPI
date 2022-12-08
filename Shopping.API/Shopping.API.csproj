@@ -34,8 +34,6 @@
 
   <ItemGroup>
     <Folder Include="Logs\" />
-    <Folder Include="UnitTest\ServiceTest\" />
-    <Folder Include="UnitTest\RepositoryTest\" />
   </ItemGroup>
 
 </Project>

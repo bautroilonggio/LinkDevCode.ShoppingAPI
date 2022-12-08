@@ -122,6 +122,7 @@ builder.Services
     });
 
 
+
 builder.Services.AddAuthorization(options =>
 {
     options.DefaultPolicy = new AuthorizationPolicyBuilder()
