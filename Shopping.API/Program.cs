@@ -57,15 +57,34 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(xmlCommentsFullPath);
 
 
-    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    //options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    //{
+    //    Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+    //    In = ParameterLocation.Header,
+    //    Name = "Authorization",
+    //    Type = SecuritySchemeType.ApiKey
+    //});
+
+    //options.OperationFilter<SecurityRequirementsOperationFilter>();
+
+    options.AddSecurityDefinition("ShoppingApiBearerAuth", new OpenApiSecurityScheme()
     {
-        Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
-        In = ParameterLocation.Header,
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        Description = "Input a valid token to access this API"
     });
 
-    options.OperationFilter<SecurityRequirementsOperationFilter>();
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "ShoppingApiBearerAuth" }
+            }, new List<string>() 
+        }
+    });
 });
 
 
@@ -98,6 +117,7 @@ builder.Services
     {
         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+        //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     })
     .AddCookie()
     .AddJwtBearer("Project", options =>
