@@ -29,7 +29,7 @@
             Controller provides actions for account management
             </summary>
         </member>
-        <member name="M:Shopping.API.Controllers.AccountController.#ctor(Microsoft.Extensions.Logging.ILogger{Shopping.API.Controllers.AccountController},Shopping.API.BusinessLogic.Services.IAccountService)">
+        <member name="M:Shopping.API.Controllers.AccountController.#ctor(Microsoft.Extensions.Logging.ILogger{Shopping.API.Controllers.AccountController},Shopping.API.BusinessLogic.Services.IAccountService,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             Contructor of account controller
             </summary>
@@ -64,6 +64,18 @@
             </summary>
             <param name="account">Information new firebase account</param>
             <returns>An ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.AccountController.GetTokenGoogle">
+            <summary>
+            Return token after sign in by Google success
+            </summary>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Shopping.API.Controllers.AccountController.SignOutGoogleAsync">
+            <summary>
+            Sign out
+            </summary>
+            <returns>IActionResult</returns>
         </member>
         <member name="M:Shopping.API.Controllers.AccountController.RefreshTokenAsync">
             <summary>
@@ -810,6 +822,42 @@
             <inheritdoc />
         </member>
         <member name="M:Shopping.API.Migrations.ShoppingDBInitial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Shopping.API.Migrations.ShoppingDBupdateAccount">
+            <inheritdoc />
+        </member>
+        <member name="M:Shopping.API.Migrations.ShoppingDBupdateAccount.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Shopping.API.Migrations.ShoppingDBupdateAccount.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Shopping.API.Migrations.ShoppingDBupdateAccount.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Shopping.API.Migrations.ShoppingDBUpdatePhoneOfAccount">
+            <inheritdoc />
+        </member>
+        <member name="M:Shopping.API.Migrations.ShoppingDBUpdatePhoneOfAccount.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Shopping.API.Migrations.ShoppingDBUpdatePhoneOfAccount.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Shopping.API.Migrations.ShoppingDBUpdatePhoneOfAccount.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Shopping.API.Migrations.ShoppingDBUpdatePhoneOfAccountRemoveUnique">
+            <inheritdoc />
+        </member>
+        <member name="M:Shopping.API.Migrations.ShoppingDBUpdatePhoneOfAccountRemoveUnique.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Shopping.API.Migrations.ShoppingDBUpdatePhoneOfAccountRemoveUnique.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Shopping.API.Migrations.ShoppingDBUpdatePhoneOfAccountRemoveUnique.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

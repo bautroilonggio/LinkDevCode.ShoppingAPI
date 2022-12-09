@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.WebSockets;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 
 namespace Shopping.API.BusinessLogic.Services
@@ -93,22 +94,107 @@ namespace Shopping.API.BusinessLogic.Services
 
         public async Task<object> SignInWithFirebaseAsync(AccountForSignInDto account)
         {
-            var auth = new FirebaseAuthProvider(
+            var firebaseAuthProvider = new FirebaseAuthProvider(
                 new FirebaseConfig(_configuration["Authentication:Firebase:WebAPIKey"]));
 
-            var t = await auth.SignInWithEmailAndPasswordAsync(account.UserName, account.Password);
+            var firebaseAuthLink = await firebaseAuthProvider.SignInWithEmailAndPasswordAsync(account.UserName, account.Password);
 
-            if(t == null)
+            if(firebaseAuthLink == null)
             {
                 throw new Exception("Email or password is invalid!");
             }
 
+            var accountEntity = await _unitOfWork.AccountRepository
+                .GetSingleConditionsAsync(a => a.UserName == account.UserName || a.Email == account.UserName);
+
+            if(accountEntity != null)
+            {
+                Account newAccount = new Account(
+                    userName: firebaseAuthLink.User.Email,
+                    password: "",
+                    firstName: firebaseAuthLink.User.FirstName,
+                    lastName: firebaseAuthLink.User.LastName,
+                    phone: "",
+                    email: firebaseAuthLink.User.Email,
+                    address: "",
+                    role: "USER"
+                );
+
+                newAccount.RefreshToken = firebaseAuthLink.RefreshToken;
+                newAccount.RefreshTokenCreatedAt = DateTime.Now;
+                newAccount.RefreshTokenExpries = DateTime.Now.AddSeconds(firebaseAuthLink.ExpiresIn);
+
+                _unitOfWork.AccountRepository.Add(newAccount);
+
+                await _unitOfWork.CommitAsync();
+            }
+            else
+            {
+                accountEntity.RefreshToken = firebaseAuthLink.RefreshToken;
+                accountEntity.RefreshTokenCreatedAt = DateTime.Now;
+                accountEntity.RefreshTokenExpries = DateTime.Now.AddSeconds(firebaseAuthLink.ExpiresIn);
+
+                await _unitOfWork.CommitAsync();
+            }
+
             var data = new
             {
-                User = t.User,
-                AccessToken = t.FirebaseToken,
-                RefreshToken = t.RefreshToken,
-                ExpiresIn = t.ExpiresIn
+                User = firebaseAuthLink.User,
+                AccessToken = firebaseAuthLink.FirebaseToken,
+                RefreshToken = firebaseAuthLink.RefreshToken,
+                ExpiresIn = firebaseAuthLink.ExpiresIn
+            };
+
+            return data;
+        }
+
+        public async Task<object> SignInWithGoogleAsync(string accessToken)
+        {
+            var firebaseAuthProvider = new FirebaseAuthProvider(
+                new FirebaseConfig(_configuration["Authentication:Firebase:WebAPIKey"]));
+
+            var firebaseAuthLink = await firebaseAuthProvider.SignInWithOAuthAsync(FirebaseAuthType.Google, accessToken);
+
+            var accountEntity = await _unitOfWork.AccountRepository
+               .GetSingleConditionsAsync(a => a.UserName == firebaseAuthLink.User.Email 
+                                      || a.Email == firebaseAuthLink.User.Email);
+
+            if (accountEntity == null)
+            {
+                Account newAccount = new Account(
+                    userName: firebaseAuthLink.User.Email,
+                    password: "",
+                    firstName: firebaseAuthLink.User.FirstName,
+                    lastName: firebaseAuthLink.User.LastName,
+                    phone: "",
+                    email: firebaseAuthLink.User.Email,
+                    address: "",
+                    role: "USER"
+                );
+
+                newAccount.RefreshToken = firebaseAuthLink.RefreshToken;
+                newAccount.RefreshTokenCreatedAt = DateTime.Now;
+                newAccount.RefreshTokenExpries = DateTime.Now.AddSeconds(firebaseAuthLink.ExpiresIn);
+
+                _unitOfWork.AccountRepository.Add(newAccount);
+
+                await _unitOfWork.CommitAsync();
+            }
+            else
+            {
+                accountEntity.RefreshToken = firebaseAuthLink.RefreshToken;
+                accountEntity.RefreshTokenCreatedAt = DateTime.Now;
+                accountEntity.RefreshTokenExpries = DateTime.Now.AddSeconds(firebaseAuthLink.ExpiresIn);
+
+                await _unitOfWork.CommitAsync();
+            }
+
+            var data = new
+            {
+                User = firebaseAuthLink.User,
+                AccessToken = firebaseAuthLink.FirebaseToken,
+                RefreshToken = firebaseAuthLink.RefreshToken,
+                ExpiresIn = firebaseAuthLink.ExpiresIn
             };
 
             return data;

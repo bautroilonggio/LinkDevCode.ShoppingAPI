@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopping.API.DataAccess.DbContexts;
 
@@ -11,9 +12,11 @@ using Shopping.API.DataAccess.DbContexts;
 namespace Shopping.API.Migrations
 {
     [DbContext(typeof(ShoppingContext))]
-    partial class ShoppingContextModelSnapshot : ModelSnapshot
+    [Migration("20221209083426_ShoppingDBupdateAccount")]
+    partial class ShoppingDBupdateAccount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,6 +92,9 @@ namespace Shopping.API.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
+                    b.HasIndex("Phone")
+                        .IsUnique();
+
                     b.HasIndex("UserName")
                         .IsUnique();
 
@@ -107,7 +113,7 @@ namespace Shopping.API.Migrations
                             Password = "admin",
                             Phone = "0972901427",
                             RefreshToken = "",
-                            RefreshTokenCreatedAt = new DateTime(2022, 12, 9, 15, 47, 43, 926, DateTimeKind.Local).AddTicks(1319),
+                            RefreshTokenCreatedAt = new DateTime(2022, 12, 9, 15, 34, 26, 131, DateTimeKind.Local).AddTicks(8923),
                             RefreshTokenExpries = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Role = "ADMIN",
                             UserName = "admin"
@@ -124,7 +130,7 @@ namespace Shopping.API.Migrations
                             Password = "user",
                             Phone = "0928347519",
                             RefreshToken = "",
-                            RefreshTokenCreatedAt = new DateTime(2022, 12, 9, 15, 47, 43, 926, DateTimeKind.Local).AddTicks(1572),
+                            RefreshTokenCreatedAt = new DateTime(2022, 12, 9, 15, 34, 26, 131, DateTimeKind.Local).AddTicks(9080),
                             RefreshTokenExpries = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Role = "USER",
                             UserName = "user"

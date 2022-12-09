@@ -8,6 +8,8 @@ using Shopping.API.DataAccess.Models;
 using System.Net.WebSockets;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Google.Apis.Auth.OAuth2;
+using FirebaseAdmin.Auth;
 
 namespace Shopping.API.Controllers
 {
@@ -22,6 +24,8 @@ namespace Shopping.API.Controllers
 
         private readonly IAccountService _accountService;
 
+        private readonly IConfiguration _configuration;
+
         /// <summary>
         /// Contructor of account controller
         /// </summary>
@@ -29,12 +33,14 @@ namespace Shopping.API.Controllers
         /// <param name="accountService">Provide methods</param>
         /// <exception cref="ArgumentNullException">Check for null</exception>
         public AccountController(ILogger<AccountController> logger,
-            IAccountService accountService)
+            IAccountService accountService,
+            IConfiguration configuration)
         {
             _logger = logger ??
                 throw new ArgumentNullException(nameof(logger));
             _accountService = accountService ??
                 throw new ArgumentNullException(nameof(accountService));
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -155,6 +161,40 @@ namespace Shopping.API.Controllers
         public async Task<ActionResult> SignUpFirebaseAsync(AccountForSignUpDto account)
         {
             await _accountService.SignUpFirebaseAsync(account);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Return token after sign in by Google success
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [Authorize]
+        [HttpGet("getToken-google")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult> GetTokenGoogle()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("Google", "access_token");
+
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+
+            var data = await _accountService.SignInWithGoogleAsync(accessToken);
+
+            return Ok(data);
+        }
+
+        /// <summary>
+        /// Sign out
+        /// </summary>
+        /// <returns>IActionResult</returns>
+        [HttpPost("signout-google")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> SignOutGoogleAsync()
+        {
+            await HttpContext.SignOutAsync();
             return Ok();
         }
 

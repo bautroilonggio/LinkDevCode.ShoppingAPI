@@ -25,16 +25,15 @@ namespace Shopping.API.DataAccess.DbContexts
             modelBuilder.Entity<Account>(entity =>
             {
                 entity.HasIndex(e => e.UserName).IsUnique();
-                entity.HasIndex(e => e.Phone).IsUnique();
                 entity.HasIndex(e => e.Email).IsUnique();
 
                 entity.HasData(
-                    new Account("admin", "admin", "Linh", "Nguyen", DateOnly.Parse("16/11/1999"), 
+                    new Account("admin", "admin", "Linh", "Nguyen", 
                             "0972901427", "nguyenkhaclinh100@gmail.com", "Hoang Mai", "ADMIN")
                     {
                         Id = 1
                     },
-                    new Account("user", "user", "Linh", "Nguyen", DateOnly.Parse("16/11/1999"), 
+                    new Account("user", "user", "Linh", "Nguyen", 
                             "0928347519", "linknguyen@gmail.com", "Hai Ba Trung", "USER")
                     {
                         Id = 2

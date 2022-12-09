@@ -94,7 +94,12 @@ builder.Services.AddSingleton(FirebaseApp.Create(new AppOptions
 
 
 builder.Services
-    .AddAuthentication("Bearer")
+    .AddAuthentication(options =>
+    {
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+    })
+    .AddCookie()
     .AddJwtBearer("Project", options =>
     {
         options.TokenValidationParameters = new()
@@ -119,6 +124,13 @@ builder.Services
             ValidIssuer = builder.Configuration["Authentication:Firebase:Issuer"],
             ValidAudience = builder.Configuration["Authentication:Firebase:Audience"],
         };
+        options.SaveToken = true;
+    })
+    .AddGoogle("Google", options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+        options.SaveTokens = true;
     });
 
 
@@ -126,7 +138,7 @@ builder.Services
 builder.Services.AddAuthorization(options =>
 {
     options.DefaultPolicy = new AuthorizationPolicyBuilder()
-                                .AddAuthenticationSchemes("Project", "Firebase")
+                                .AddAuthenticationSchemes("Project", "Firebase", "Google")
                                 .RequireAuthenticatedUser()
                                 .Build();
 });

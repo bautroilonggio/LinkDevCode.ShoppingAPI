@@ -28,7 +28,6 @@ namespace Shopping.API.DataAccess.Entities
         [Required]
         public DateOnly DateOfBirth { get; set; }
 
-        [Required]
         [MaxLength(10)]
         public string Phone { get; set; }
 
@@ -58,14 +57,13 @@ namespace Shopping.API.DataAccess.Entities
         public ICollection<Order> Orders { get; set; } = new List<Order>();
 
         public Account(string userName, string password,
-            string firstName, string lastName, DateOnly dateOfBirth,
+            string firstName, string lastName,
             string phone, string email, string address, string role)
         {
             UserName = userName;
             Password = password;
             FirstName = firstName;
             LastName = lastName;
-            DateOfBirth = dateOfBirth;
             Phone = phone;
             Email = email;
             Address = address;

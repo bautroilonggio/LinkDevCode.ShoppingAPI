@@ -10,5 +10,6 @@ namespace Shopping.API.BusinessLogic.Services
         Task<bool> DeleteAccountAsync(string userName);
         Task<object> SignInWithFirebaseAsync(AccountForSignInDto account);
         Task SignUpFirebaseAsync(AccountForSignUpDto account);
+        Task<object> SignInWithGoogleAsync(string accessToken);
     }
 }
