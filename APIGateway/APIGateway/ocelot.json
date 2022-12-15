@@ -1,0 +1,353 @@
+{
+  "Routes": [
+    /// AUTHENTICATION WEB API
+    // Sign in with the account in the database
+    {
+      "DownstreamPathTemplate": "/api/accounts/signin",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7298
+        }
+      ],
+      "UpstreamPathTemplate": "/api/accounts/signin",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    // Sign up with Role = ADMIN
+    {
+      "DownstreamPathTemplate": "/api/accounts/signup",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7298
+        }
+      ],
+      "UpstreamPathTemplate": "/api/accounts/signup",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Project",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "ADMIN"
+      }
+    },
+    // Delete Account with Role = ADMIN
+    {
+      "DownstreamPathTemplate": "/api/accounts/{userName}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7298
+        }
+      ],
+      "UpstreamPathTemplate": "/api/accounts/{userName}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Project",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "ADMIN"
+      }
+    },
+    // Refresh Token
+    {
+      "DownstreamPathTemplate": "/api/accounts/refresh-token",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7298
+        }
+      ],
+      "UpstreamPathTemplate": "/api/accounts/refresh-token",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    // Sign in with the account firebase using email/password
+    {
+      "DownstreamPathTemplate": "/api/accounts/signin-firebase",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7298
+        }
+      ],
+      "UpstreamPathTemplate": "/api/accounts/signin-firebase",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    // Sign up with firebase using email/password
+    {
+      "DownstreamPathTemplate": "/api/accounts/signup-firebase",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7298
+        }
+      ],
+      "UpstreamPathTemplate": "/api/accounts/signup-firebase",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    // Get Token after sign in by google account success
+    {
+      "DownstreamPathTemplate": "/api/accounts/getToken-google",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7298
+        }
+      ],
+      "UpstreamPathTemplate": "/api/accounts/getToken-google",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+
+    /// CATALOG WEB API
+    // Get all products
+    {
+      "DownstreamPathTemplate": "/api/v{version:apiVersion}/products",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7072
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v{version:apiVersion}/products",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    // Get product by Id
+    {
+      "DownstreamPathTemplate": "/api/v{version:apiVersion}/products/{productId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7072
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v{version:apiVersion}/products/{productId}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    // Post a new product with Role = ADMIN
+    {
+      "DownstreamPathTemplate": "/api/v{version:apiVersion}/products",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7072
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v{version:apiVersion}/products",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Project",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "ADMIN"
+      }
+    },
+    // Put, Delete product by Id with Role = ADMIN
+    {
+      "DownstreamPathTemplate": "/api/v{version:apiVersion}/products/{productId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7072
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v{version:apiVersion}/products/{productId}",
+      "UpstreamHttpMethod": [ "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Project",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "ADMIN"
+      }
+    },
+
+
+    /// CART WEB API
+    // Get all carts, Post new cart of user
+    {
+      "DownstreamPathTemplate": "/api/v{version:apiVersion}/users/u/carts",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7078
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v{version:apiVersion}/users/u/carts",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Project",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "UserId": "Claims[Sub] > value > |"
+      }
+    },
+    // Get, Put, Delete cart of user by Id
+    {
+      "DownstreamPathTemplate": "/api/v{version:apiVersion}/users/u/carts/{cartId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7078
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v{version:apiVersion}/users/u/carts/{cartId}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Project",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "UserId": "Claims[Sub] > value > |"
+      }
+    },
+
+
+    /// Ordering web API
+    // Get all order, Post new order of user
+    {
+      "DownstreamPathTemplate": "/api/v{version:apiVersion}/users/u/orders",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7299
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v{version:apiVersion}/users/u/orders",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Project",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "UserId": "Claims[Sub] > value > |"
+      }
+    },
+    // Get order include products of user by Id
+    {
+      "DownstreamPathTemplate": "/api/v{version:apiVersion}/users/u/orders/{orderId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7299
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v{version:apiVersion}/users/u/orders/{orderId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Project",
+        "AllowedScopes": []
+      }
+    },
+    // Put, Delete order of user by Id with Role = ADMIN
+    {
+      "DownstreamPathTemplate": "/api/v{version:apiVersion}/users/u/orders/{orderId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7299
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v{version:apiVersion}/users/u/orders/{orderId}",
+      "UpstreamHttpMethod": [ "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Project",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "ADMIN"
+      }
+    },
+    // Get list of orderDetail by orderId
+    {
+      "DownstreamPathTemplate": "/api/v{version:apiVersion}/users/u/orders/{orderId}/details",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7299
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v{version:apiVersion}/users/u/orders/{orderId}/details",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+
+
+    /// RATING WEB API
+    {
+      "DownstreamPathTemplate": "/api/v{version:apiVersion}/products/{productId}/reviews",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7226
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v{version:apiVersion}/products/{productId}/reviews",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version:apiVersion}/products/{productId}/reviews?orderId={orderId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7226
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v{version:apiVersion}/products/{productId}/reviews?orderId={orderId}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Project",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "USER"
+      },
+      "AddHeadersToRequest": {
+        "UserId": "Claims[Sub] > value > |"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version:apiVersion}/products/{productId}/reviews/{reviewId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7226
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v{version:apiVersion}/products/{productId}/reviews/{reviewId}",
+      "UpstreamHttpMethod": [ "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Project",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "USER"
+      },
+      "AddHeadersToRequest": {
+        "UserId": "Claims[Sub] > value > |"
+      }
+    }
+  ]
+}

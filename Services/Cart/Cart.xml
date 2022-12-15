@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cart</name>
+    </assembly>
+    <members>
+        <member name="P:Cart.Commons.PaginationMetadata.TotalItemCount">
+            <summary>
+            Tổng số lượng mục
+            </summary>
+        </member>
+        <member name="P:Cart.Commons.PaginationMetadata.TotalPageCount">
+            <summary>
+            Tổng số trang
+            </summary>
+        </member>
+        <member name="P:Cart.Commons.PaginationMetadata.PageSize">
+            <summary>
+            Kích thước trang
+            </summary>
+        </member>
+        <member name="P:Cart.Commons.PaginationMetadata.CurrentPage">
+            <summary>
+            Trang hiện tại
+            </summary>
+        </member>
+        <member name="T:Cart.Controllers.CartController">
+            <summary>
+            Controller provides actions for cart management
+            </summary>
+        </member>
+        <member name="M:Cart.Controllers.CartController.#ctor(Microsoft.Extensions.Logging.ILogger{Cart.Controllers.CartController},Cart.BusinessLogic.Services.ICartService,Cart.BusinessLogic.Services.IIdentityService)">
+            <summary>
+            Contructor of cart controller
+            </summary>
+            <param name="logger">Log actions</param>
+            <param name="cartService">Provide methods</param>
+            <exception cref="T:System.ArgumentNullException">Check for null</exception>
+        </member>
+        <member name="M:Cart.Controllers.CartController.GetCartsAsync(System.Int32,System.Int32)">
+            <summary>
+            Get carts of account
+            </summary>
+            <param name="searchQuery"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <returns>ActionResult></returns>
+        </member>
+        <member name="M:Cart.Controllers.CartController.GetCartAsync(System.Int32)">
+            <summary>
+            Get card by id
+            </summary>
+            <param name="cartId">The id of cart</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cart.Controllers.CartController.CreateCartAsync(Cart.DataAccess.Models.CartForCreateDto)">
+            <summary>
+            Add product to user's carts
+            </summary>
+            <param name="cart">Information cart</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Cart.Controllers.CartController.UpdateCartAsync(System.Int32,Cart.DataAccess.Models.CartForUpdateDto)">
+            <summary>
+            Update user's cart
+            </summary>
+            <param name="cartId"></param>
+            <param name="cart"></param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Cart.Controllers.CartController.DeleteCartAsync(System.Int32)">
+            <summary>
+            Delete product in user's carts
+            </summary>
+            <param name="cartId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cart.DataAccess.Models.CartDto">
+            <summary>
+            A DTO for an cart of an account
+            </summary>
+        </member>
+        <member name="P:Cart.DataAccess.Models.CartDto.Id">
+            <summary>
+            Id of the cart
+            </summary>
+        </member>
+        <member name="P:Cart.DataAccess.Models.CartDto.ProductId">
+            <summary>
+            Id of product in the cart
+            </summary>
+        </member>
+        <member name="P:Cart.DataAccess.Models.CartDto.Quantity">
+            <summary>
+            Quantity of product in the cart
+            </summary>
+        </member>
+        <member name="P:Cart.DataAccess.Models.CartDto.Price">
+            <summary>
+            The price to buy the product
+            </summary>
+        </member>
+        <member name="P:Cart.DataAccess.Models.CartDto.UserId">
+            <summary>
+            Name of account buying product
+            </summary>
+        </member>
+        <member name="T:Cart.DataAccess.Models.CartForCreateDto">
+            <summary>
+            A DTO for an cart to add products
+            </summary>
+        </member>
+        <member name="P:Cart.DataAccess.Models.CartForCreateDto.ProductId">
+            <summary>
+            Id of product
+            </summary>
+        </member>
+        <member name="P:Cart.DataAccess.Models.CartForCreateDto.Quantity">
+            <summary>
+            Quantity of product
+            </summary>
+        </member>
+        <member name="P:Cart.DataAccess.Models.CartForCreateDto.Price">
+            <summary>
+            The price to buy the product
+            </summary>
+        </member>
+        <member name="T:Cart.DataAccess.Models.CartForUpdateDto">
+            <summary>
+            A DTO for an cart to update
+            </summary>
+        </member>
+        <member name="P:Cart.DataAccess.Models.CartForUpdateDto.Quantity">
+            <summary>
+            Quantity of product
+            </summary>
+        </member>
+        <member name="P:Cart.DataAccess.Models.CartForUpdateDto.Price">
+            <summary>
+            The price to buy the product
+            </summary>
+        </member>
+        <member name="T:Cart.Migrations.ShoppingDBCartInitial">
+            <inheritdoc />
+        </member>
+        <member name="M:Cart.Migrations.ShoppingDBCartInitial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Cart.Migrations.ShoppingDBCartInitial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Cart.Migrations.ShoppingDBCartInitial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

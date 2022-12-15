@@ -1,0 +1,313 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Ordering</name>
+    </assembly>
+    <members>
+        <member name="P:Ordering.Commons.PaginationMetadata.TotalItemCount">
+            <summary>
+            Tổng số lượng mục
+            </summary>
+        </member>
+        <member name="P:Ordering.Commons.PaginationMetadata.TotalPageCount">
+            <summary>
+            Tổng số trang
+            </summary>
+        </member>
+        <member name="P:Ordering.Commons.PaginationMetadata.PageSize">
+            <summary>
+            Kích thước trang
+            </summary>
+        </member>
+        <member name="P:Ordering.Commons.PaginationMetadata.CurrentPage">
+            <summary>
+            Trang hiện tại
+            </summary>
+        </member>
+        <member name="T:Ordering.Controllers.OrderController">
+            <summary>
+            Controller provides actions for order management
+            </summary>
+        </member>
+        <member name="M:Ordering.Controllers.OrderController.#ctor(Microsoft.Extensions.Logging.ILogger{Ordering.Controllers.OrderController},Ordering.BusinessLogic.Services.IOrderService,Ordering.BusinessLogic.Services.IIdentityService)">
+            <summary>
+            Contructor of order controller
+            </summary>
+            <param name="logger">Log actions</param>
+            <param name="orderService">Provide methods</param>
+            <exception cref="T:System.ArgumentNullException">Check for null</exception>
+        </member>
+        <member name="M:Ordering.Controllers.OrderController.GetOrdersAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get orders of account
+            </summary>
+            <param name="searchQuery"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <returns>ActionResult></returns>
+        </member>
+        <member name="M:Ordering.Controllers.OrderController.GetOrderAsync(System.Int32)">
+            <summary>
+            Get order include list of products by id
+            </summary>
+            <param name="orderId">The id of order</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Ordering.Controllers.OrderController.GetOrderDetailsAsync(System.Int32)">
+            <summary>
+            Get detail of order by id
+            </summary>
+            <param name="orderId">The id of order</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Ordering.Controllers.OrderController.CreateOrderAsync(Ordering.DataAccess.Models.OrderForCreateDto)">
+            <summary>
+            Create a new order
+            </summary>
+            <param name="order">The information of new order</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Ordering.Controllers.OrderController.UpdateOrderAsync(System.Int32,Ordering.DataAccess.Models.OrderForUpdateDto)">
+            <summary>
+            Update order by ADMIN account
+            </summary>
+            <param name="orderId">The id of order that will be updated</param>
+            <param name="order">The information update of order</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Ordering.Controllers.OrderController.DeleteOrderAsync(System.Int32)">
+            <summary>
+            Delete order by ADMIN account
+            </summary>
+            <param name="orderId">The id of order that will be deleted</param>
+            <returns></returns>
+        </member>
+        <member name="T:Ordering.DataAccess.Models.CartForCreateOrderDto">
+            <summary>
+            A DTO for an cart to create an order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.CartForCreateOrderDto.Id">
+            <summary>
+            Id of cart in order
+            </summary>
+        </member>
+        <member name="T:Ordering.DataAccess.Models.OrderDetailDto">
+            <summary>
+            A DTO for OrderDetail of an order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderDetailDto.ProductId">
+            <summary>
+            Id of product in order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderDetailDto.Quantity">
+            <summary>
+            Quantity of product in order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderDetailDto.Price">
+            <summary>
+            The price to buy the product
+            </summary>
+        </member>
+        <member name="T:Ordering.DataAccess.Models.OrderForCreateDto">
+            <summary>
+            A DTO for order to create new order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderForCreateDto.ShipName">
+            <summary>
+            Name of shipper of the order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderForCreateDto.ShipAddress">
+            <summary>
+            Address of shipper of the order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderForCreateDto.ShipPhone">
+            <summary>
+            Phone number of shipper of the order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderForCreateDto.TotalPayment">
+            <summary>
+            Total payment of the order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderForCreateDto.Carts">
+            <summary>
+            Carts in the order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderForCreateDto.OrderDetails">
+            <summary>
+            Order Details in the order
+            </summary>
+        </member>
+        <member name="T:Ordering.DataAccess.Models.OrderForUpdateDto">
+            <summary>
+            A DTO for order to update
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderForUpdateDto.ShipName">
+            <summary>
+            Name of shipper of the order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderForUpdateDto.ShipAddress">
+            <summary>
+            Address of shipper of the order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderForUpdateDto.ShipPhone">
+            <summary>
+            Phone number of shipper of the order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderForUpdateDto.Status">
+            <summary>
+            Status of the order
+            </summary>
+        </member>
+        <member name="T:Ordering.DataAccess.Models.OrderIncludeProductsDto">
+            <summary>
+            A DTO for order include list of products
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderIncludeProductsDto.Id">
+            <summary>
+            Id of order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderIncludeProductsDto.OrderDate">
+            <summary>
+            Order date of order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderIncludeProductsDto.ShipName">
+            <summary>
+            Name of shipper of order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderIncludeProductsDto.ShipAddress">
+            <summary>
+            Address of shipper of order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderIncludeProductsDto.ShipPhone">
+            <summary>
+            Phone number of shipper of order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderIncludeProductsDto.Status">
+            <summary>
+            Status of order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderIncludeProductsDto.TotalPayment">
+            <summary>
+            Total payment of order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderIncludeProductsDto.NumberOfOrderDetails">
+            <summary>
+            Number of products types in the order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderIncludeProductsDto.OrderDetails">
+            <summary>
+            Information of products types in the order
+            </summary>
+        </member>
+        <member name="T:Ordering.DataAccess.Models.OrderWithoutProductsDto">
+            <summary>
+            A DTO for order without list of products
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderWithoutProductsDto.Id">
+            <summary>
+            Id of order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderWithoutProductsDto.OrderDate">
+            <summary>
+            Order date of order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderWithoutProductsDto.ShipName">
+            <summary>
+            Name of shipper of order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderWithoutProductsDto.ShipAddress">
+            <summary>
+            Address of shipper of order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderWithoutProductsDto.ShipPhone">
+            <summary>
+            Phone number of shipper of order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderWithoutProductsDto.Status">
+            <summary>
+            Status of order
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.OrderWithoutProductsDto.TotalPayment">
+            <summary>
+            Total payment of order
+            </summary>
+        </member>
+        <member name="T:Ordering.DataAccess.Models.ProductForUpdateDto">
+            <summary>
+            A DTO for product to update after ordered
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.ProductForUpdateDto.Name">
+            <summary>
+            Name of product
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.ProductForUpdateDto.Brand">
+            <summary>
+            Brand of product
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.ProductForUpdateDto.Category">
+            <summary>
+            Category of product
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.ProductForUpdateDto.Description">
+            <summary>
+            Description of product
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.ProductForUpdateDto.SellingPrice">
+            <summary>
+            Selling price of product
+            </summary>
+        </member>
+        <member name="P:Ordering.DataAccess.Models.ProductForUpdateDto.TotalQuantity">
+            <summary>
+            Total quantity of product
+            </summary>
+        </member>
+        <member name="T:Ordering.Migrations.ShoppingDBOrderingInitial">
+            <inheritdoc />
+        </member>
+        <member name="M:Ordering.Migrations.ShoppingDBOrderingInitial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ordering.Migrations.ShoppingDBOrderingInitial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ordering.Migrations.ShoppingDBOrderingInitial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

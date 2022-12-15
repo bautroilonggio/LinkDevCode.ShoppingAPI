@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Rating</name>
+    </assembly>
+    <members>
+        <member name="P:Rating.Commons.PaginationMetadata.TotalItemCount">
+            <summary>
+            Tổng số lượng mục
+            </summary>
+        </member>
+        <member name="P:Rating.Commons.PaginationMetadata.TotalPageCount">
+            <summary>
+            Tổng số trang
+            </summary>
+        </member>
+        <member name="P:Rating.Commons.PaginationMetadata.PageSize">
+            <summary>
+            Kích thước trang
+            </summary>
+        </member>
+        <member name="P:Rating.Commons.PaginationMetadata.CurrentPage">
+            <summary>
+            Trang hiện tại
+            </summary>
+        </member>
+        <member name="T:Rating.Controllers.ReviewController">
+            <summary>
+            Controller provides actions for review management
+            </summary>
+        </member>
+        <member name="M:Rating.Controllers.ReviewController.#ctor(Rating.BusinessLogic.Services.IIdentityService,Rating.BusinessLogic.Services.IReviewService)">
+            <summary>
+            Contructor of review controller
+            </summary>
+            <param name="reviewService">Provide methods</param>
+            <exception cref="T:System.ArgumentNullException">Check for null</exception>
+        </member>
+        <member name="M:Rating.Controllers.ReviewController.GetReviewsAsync(System.Int32,System.Nullable{System.Int32},System.Int32,System.Int32)">
+            <summary>
+            Get reviews to product
+            </summary>
+            <param name="productId"></param>
+            <param name="rating"></param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Rating.Controllers.ReviewController.CreateReviewAsync(System.Int32,System.Int32,Rating.DataAccess.Models.ReviewForCreateDto)">
+            <summary>
+            Create vew review to product
+            </summary>
+            <param name="orderId">The id of order</param>
+            <param name="productId">The id of product that will be rated</param>
+            <param name="review">The information of review</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Rating.Controllers.ReviewController.UpdateReviewAsync(System.Int32,System.Int32,Rating.DataAccess.Models.ReviewForUpdateDto)">
+            <summary>
+            Update information of review to product
+            </summary>
+            <param name="productId">The id of product that is rated</param>
+            <param name="reviewId">The id of review that will be updated</param>
+            <param name="review">The information of review</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Rating.Controllers.ReviewController.DeleteReviewAsync(System.Int32,System.Int32)">
+            <summary>
+            Delete a review to product
+            </summary>
+            <param name="productId">The id of product</param>
+            <param name="reviewId">The id of review</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="T:Rating.DataAccess.Models.ReviewDto">
+            <summary>
+            A DTO for review 
+            </summary>
+        </member>
+        <member name="P:Rating.DataAccess.Models.ReviewDto.Id">
+            <summary>
+            Id of review
+            </summary>
+        </member>
+        <member name="P:Rating.DataAccess.Models.ReviewDto.RatingScore">
+            <summary>
+            Rating for product
+            </summary>
+        </member>
+        <member name="P:Rating.DataAccess.Models.ReviewDto.Content">
+            <summary>
+            Content of review
+            </summary>
+        </member>
+        <member name="P:Rating.DataAccess.Models.ReviewDto.CreateAt">
+            <summary>
+            Creation time of review
+            </summary>
+        </member>
+        <member name="P:Rating.DataAccess.Models.ReviewDto.UserId">
+            <summary>
+            Id of author of the review
+            </summary>
+        </member>
+        <member name="T:Rating.DataAccess.Models.ReviewForCreateDto">
+            <summary>
+            A DTO for review to create
+            </summary>
+        </member>
+        <member name="P:Rating.DataAccess.Models.ReviewForCreateDto.RatingScore">
+            <summary>
+            Rating for product
+            </summary>
+        </member>
+        <member name="P:Rating.DataAccess.Models.ReviewForCreateDto.Content">
+            <summary>
+            Content of review
+            </summary>
+        </member>
+        <member name="T:Rating.DataAccess.Models.ReviewForUpdateDto">
+            <summary>
+            A DTO for review to update
+            </summary>
+        </member>
+        <member name="P:Rating.DataAccess.Models.ReviewForUpdateDto.RatingScore">
+            <summary>
+            Rating for product
+            </summary>
+        </member>
+        <member name="P:Rating.DataAccess.Models.ReviewForUpdateDto.Content">
+            <summary>
+            Content of review
+            </summary>
+        </member>
+        <member name="T:Rating.Migrations.ShoppingDBRatingInitial">
+            <inheritdoc />
+        </member>
+        <member name="M:Rating.Migrations.ShoppingDBRatingInitial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Rating.Migrations.ShoppingDBRatingInitial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Rating.Migrations.ShoppingDBRatingInitial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

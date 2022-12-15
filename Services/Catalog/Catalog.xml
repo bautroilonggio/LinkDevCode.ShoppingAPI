@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Catalog</name>
+    </assembly>
+    <members>
+        <member name="P:Catalog.Commons.PaginationMetadata.TotalItemCount">
+            <summary>
+            Tổng số lượng mục
+            </summary>
+        </member>
+        <member name="P:Catalog.Commons.PaginationMetadata.TotalPageCount">
+            <summary>
+            Tổng số trang
+            </summary>
+        </member>
+        <member name="P:Catalog.Commons.PaginationMetadata.PageSize">
+            <summary>
+            Kích thước trang
+            </summary>
+        </member>
+        <member name="P:Catalog.Commons.PaginationMetadata.CurrentPage">
+            <summary>
+            Trang hiện tại
+            </summary>
+        </member>
+        <member name="T:Catalog.Controllers.ProductController">
+            <summary>
+            Controller provides actions for product management
+            </summary>
+        </member>
+        <member name="M:Catalog.Controllers.ProductController.#ctor(Catalog.BusinessLogic.Services.IProductService)">
+            <summary>
+            Contructor of product controller
+            </summary>
+            <param name="productService">Provide methods</param>
+            <exception cref="T:System.ArgumentNullException">Check for null</exception>
+        </member>
+        <member name="M:Catalog.Controllers.ProductController.GetProductsAsync(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Get all products
+            </summary>
+            <param name="name">Product name you want to search</param>
+            <param name="searchQuery">Information of product you want to search</param>
+            <param name="pageNumber"></param>
+            <param name="pageSize"></param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Catalog.Controllers.ProductController.GetProductAsync(System.Int32)">
+            <summary>
+            Get products by id
+            </summary>
+            <param name="productId">The id of product</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Catalog.Controllers.ProductController.CreateProductAsync(Catalog.DataAccess.Models.Product.ProductForCreateDto)">
+            <summary>
+            Create a new order by ADMIN account
+            </summary>
+            <param name="product">The information of new product</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Catalog.Controllers.ProductController.UpdateProductAsync(System.Int32,Catalog.DataAccess.Models.ProductForUpdateDto)">
+            <summary>
+            Update information product by ADMIN account
+            </summary>
+            <param name="productId">The id of product that will be updated</param>
+            <param name="product">The information update of product</param>
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:Catalog.Controllers.ProductController.DeleteProductAsync(System.Int32)">
+            <summary>
+            Delete product by ADMIN account
+            </summary>
+            <param name="productId">The Id of product that will be deleted</param>
+            <returns></returns>
+        </member>
+        <member name="T:Catalog.DataAccess.Models.ProductDto">
+            <summary>
+            A DTO for product without list of reviews
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.ProductDto.Id">
+            <summary>
+            Id of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.ProductDto.Name">
+            <summary>
+            Name of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.ProductDto.SellingPrice">
+            <summary>
+            Selling price of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.ProductDto.TotalQuantity">
+            <summary>
+            total quantity of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.ProductDto.CreateAt">
+            <summary>
+            Creation time of product
+            </summary>
+        </member>
+        <member name="T:Catalog.DataAccess.Models.Product.ProductForCreateDto">
+            <summary>
+            A DTO for product for create
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.Product.ProductForCreateDto.Name">
+            <summary>
+            Name of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.Product.ProductForCreateDto.Brand">
+            <summary>
+            Brand of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.Product.ProductForCreateDto.Category">
+            <summary>
+            Category of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.Product.ProductForCreateDto.Description">
+            <summary>
+            Description of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.Product.ProductForCreateDto.SellingPrice">
+            <summary>
+            Selling price of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.Product.ProductForCreateDto.TotalQuantity">
+            <summary>
+            Total quantity of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.Product.ProductForCreateDto.CreateAt">
+            <summary>
+            Creation time of order
+            </summary>
+        </member>
+        <member name="T:Catalog.DataAccess.Models.ProductForUpdateDto">
+            <summary>
+            A DTO for product to update
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.ProductForUpdateDto.Name">
+            <summary>
+            Name of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.ProductForUpdateDto.Brand">
+            <summary>
+            Brand of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.ProductForUpdateDto.Category">
+            <summary>
+            Category of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.ProductForUpdateDto.Description">
+            <summary>
+            Description of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.ProductForUpdateDto.SellingPrice">
+            <summary>
+            Selling price of product
+            </summary>
+        </member>
+        <member name="P:Catalog.DataAccess.Models.ProductForUpdateDto.TotalQuantity">
+            <summary>
+            Total quantity of product
+            </summary>
+        </member>
+        <member name="T:Catalog.Migrations.ShoppingDBCatalogInitial">
+            <inheritdoc />
+        </member>
+        <member name="M:Catalog.Migrations.ShoppingDBCatalogInitial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Catalog.Migrations.ShoppingDBCatalogInitial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Catalog.Migrations.ShoppingDBCatalogInitial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
